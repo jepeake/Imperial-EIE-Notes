@@ -1,4 +1,6 @@
-## _Advanced Computer Architecture_
+## _Advanced Computer Architecture (COMP60001)_
+
+_Contents:_
 
 **_Pipelining_**
 
@@ -19,3 +21,7 @@
 **_GPU_**
 
 **_Parallel Programming_**
+
+- - - 
+
+_Thank you to Paul Kelly & the Department of Computing at Imperial College for providing this course._
