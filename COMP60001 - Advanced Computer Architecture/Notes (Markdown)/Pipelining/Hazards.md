@@ -45,10 +45,8 @@
 - ***structural hazard*** *caused by simultaneous access*
 - *every time you do a load instruction you cause a simultaneous instruction to stall
 
-![[Pasted image 20230812141644.png|500]]
-
 - ***stall*** *means that instruction 3 must be delayed by one cycle*
-- *causes a pipeline* ***bubble*
+- *causes a pipeline* ***bubble***
 
 
 - ***bubble*** *propagates through the pipeline*
@@ -63,12 +61,12 @@
 
 - - - 
 
-***Data Hazard**
+***Data Hazard***
 
 
 - *r1 computed in first instruction & then used in subsequent instructions*
 - *r1 value only written to the register file only in the write-back stage*
-- *but needed in the 2nd stage of the 2nd, 3rd, 4th, and 5th instructions to be fetched
+- *but needed in the 2nd stage of the 2nd, 3rd, 4th, and 5th instructions to be fetched*
 
 - *for 5th instruction - okay as register file only accessed in clock cycle after the value has changed*
 - *for 4th instruction - still okay as data fetched from register file in second half of clock cycle and written in the first half of the same cycle*
@@ -83,7 +81,7 @@
 - *result of add instruction computed at the end of the 3rd stage - so can **forward** that value to where it is needed in the next instruction*
 - *in this case - forwarding from the output of the ALU to the input of the ALU for the next instruction*
 
-- *can do so for other instructions - but may need to delay the values before forwarding 
+- *can do so for other instructions - but may need to delay the values before forwarding*
 
 - - - 
 
@@ -130,8 +128,8 @@
 ***HW Change for Forwarding***
 
 
-***changes:*
-- *add forwarding (bypass) paths
+***changes:***
+- *add forwarding (bypass) paths*
 - *add multiplexors to select where ALU operand should come from*
 - *determine MUX Control in ID stage*
 - *if source register is the target of an instruction that will not be in WB in time - forward*
@@ -141,7 +139,7 @@
 - *if value needed not yet written back to register - multiplexor must select a forwarding path*
 
 - *wires from ALU output to mux - for forwarding to next instruction*
-- *wires from data memory output to mux - for forwarding to the next-but-one instruction
+- *wires from data memory output to mux - for forwarding to the next-but-one instruction*
 
 - *multiplexors controlled by **decode unit***
 - *extended to control a bigger multiplexor for forwarding - to select values for blue wires*
@@ -155,11 +153,10 @@
 
 ***data flow graph**: represents the flow of data within a system → used to visualise & analyse the dependencies between different instructions*
 
-
-- *values passed directly from the output of the ALU to the input - via forwarding wires that are dynamically configured by the decode unit
+- *values passed directly from the output of the ALU to the input - via forwarding wires that are dynamically configured by the decode unit*
 - *values going round & round in the arithmetic unit for this sequence of operations*
 
-***Multiple ALUs:*
+***Multiple ALUs:***
 
 
 - *execute multiple instructions per clock cycle - with multiple ALUs*
@@ -169,7 +166,7 @@
 
 - - - 
 
-***Data Hazard even with Forwarding:*
+***Data Hazard even with Forwarding:***
 
 
 - *here - in load instruction - value r1 is only available at the end of the data memory - as the ALU comes before to calculate offset*
@@ -179,7 +176,7 @@
 - ***leads to a pipeline stall due to data hazard***
 
 
-- ***load-to-use stall*
+- ***load-to-use stall***
 - *need to configure decode logic to implement pipeline stalls as well as configuring forwarding paths*
 
 - *at decode time - notices that instruction needs r1 that will not be available until the next cycle - decoder stalls that instruction for one cycle so that forwarding can be done - and then carried out forwarding*
@@ -189,7 +186,7 @@
 ***Software Scheduling to Avoid Load-to-Use Stall***
 
 
-***implemented by compiler*
+***implemented by compiler***
 
 - *simple compiler will compile each statement separately*
 - *putting a stall between load & add instructions to avoid data hazard*
@@ -207,16 +204,14 @@
 
 - *Unconditional Jump → See Opcode, Add Offset to PC*
 - *Jump Registers → See Opcode, Read Register Value + Offset*
-- *Conditional Branch → See Opcode, Jump to PC + Offset if Register Condition True
+- *Conditional Branch → See Opcode, Jump to PC + Offset if Register Condition True*
 - *Other Instruction → See Opcode, PC + 4*
 
 - ***Information: Opcode, PC, Offset, Register Value***
 
 - - - 
 
-***Control Hazards on Branches*
-
-![[Pasted image 20230813103500.png|500]]
+***Control Hazards on Branches***
 
 - *start decoding branch instruction in the 2nd cycle & fetching 2nd instruction - but, branch if equal may be true and need to fetch instruction at PC+36 rather than PC+4*
 
@@ -226,15 +221,11 @@
 
 ***Control Flow Information in Pipeline***
 
-![[Pasted image 20230909171604.png|500]]
-
 - - - 
 
 ***RISC-V Unconditional PC-Relative Jumps***
 
 - *Unconditional Jump - JAL (PC Relative Jump)*
-
-![[Pasted image 20230909171710.png|500]]
 
 - *See the Opcode after the Instruction Register + see Jump*
 - *→ only know it’s a Jump Instruction in the Decode Stage*
@@ -256,8 +247,6 @@
 
 - *pipeline execution of unconditional PC-Relative Jumps*
 
-![[Pasted image 20230909172153.png|500]]
-
 - *when we decode the jump & realise jump to be taken - stall the following instruction by inserting a bubble*
 - *changing control flow*
 
@@ -267,15 +256,11 @@
 
 - *need Opcode, PC, Register Value, Offset*
 
-![[Pasted image 20230909173629.png|500]]
-
 - *cannot decide until execute stage whether to take branch (is condition met)*
 
 - - - 
 
 ***Pipelining for Conditional Branches***
-
-![[Pasted image 20230909181422.png|500]]
 
 - *need two bubbles - don’t know whether branch is resolved until execution stage, by that time, two more instructions in-flight, one in F stage, and one in D stage*
 - *both changing the control flow*
@@ -331,7 +316,7 @@
 - ***if there was no stalls - could finish one instruction per cycle***
 - *if we had no hazards we could do it without forwarding - & decode/control would be simpler*
 
-***solution: executing two threads concurrently*
+***solution: executing two threads concurrently***
 
 - *maintain two PCs*
 - *even cycle - fetch from PC0*
