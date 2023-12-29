@@ -59,7 +59,7 @@
 
 - - - 
 
-***Datapath Hardware*
+***Datapath Hardware***
 
 - *fully pipelined*
 - *synchronous write & asynchronous read*
@@ -71,7 +71,7 @@
 - ***Instruction Decode***
 - ***Register Fetch***
 - ***Execute & Address Calculation***
-- ***Memory Access**
+- ***Memory Access***
 - ***Writeback***
 
 <br>
@@ -95,7 +95,7 @@
 - *Then, the register operands that are fetched from the register file can be stashed in the next buffer register, so in the next clock cycle, the second pipeline stage can be operating on the next instruction*
 - *an instruction that is fetched progressively moves down the pipeline with each successive clock tick*
 
-<br.
+<br>
 
 ***how is this different from without pipelining?***
 → ***shortens the critical path***
@@ -142,8 +142,8 @@
 
 <br>
 
-- *it helps **reduce the throughput of the entire workload**
-- ***throughput**: the number of instruction that can be processed per unit time (instructions per clock cycle)
+- *it helps **reduce the throughput of the entire workload***
+- ***throughput**: the number of instruction that can be processed per unit time (instructions per clock cycle)*
 - *can start an instruction every clock cycle & finish an instruction every cycle - but no one instruction completes any faster*
 - *but, can run at a very high clock rate, as reduced logic depth of each pipeline stage*
 
