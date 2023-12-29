@@ -219,10 +219,6 @@
 
 - - - 
 
-***Control Flow Information in Pipeline***
-
-- - - 
-
 ***RISC-V Unconditional PC-Relative Jumps***
 
 - *Unconditional Jump - JAL (PC Relative Jump)*
