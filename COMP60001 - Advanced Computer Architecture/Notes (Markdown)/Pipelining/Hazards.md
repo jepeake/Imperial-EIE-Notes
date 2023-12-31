@@ -187,7 +187,13 @@
 
 - - - 
 
-***Data Hazard even with Forwarding:***
+***Load-to-Use Stall:***
+
+→ ***data hazard in which the data being loaded by a load instruction is not yet available when needed by the next instruction***
+→ *must stall*
+→ *cannot be resolved by forwarding*
+
+***example:***
 
 - *here - in load instruction - value r1 is only available at the end of the data memory - as the ALU comes before to calculate offset*
 - *but sub instruction needs the value r1 in the execute stage (before the value can be read from data memory)*
