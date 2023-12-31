@@ -5,7 +5,7 @@
 
 - - - 
 
-***RISC Instruction Set: MIPS***
+***RISC Instruction Set:***
 
 ***RISC***
 → *every instruction same width (32bits) fixed-value encodings*
@@ -20,7 +20,8 @@
 
 <br>
 
-***Register-Register:*** *2 sources registers + destination register + opcode*
+***Register-Register:*** 
+→ *2 sources registers + destination register + opcode*
 
 ***Register-Immediate:*** *source register + destination register + immediate + opcode*
 - *add constants to a register (such as when accessing value in a struct in C)*
@@ -44,8 +45,7 @@
 
 ***Fetch-Decode-Execute Machine***
 
-- *To execute the MIPS instruction set we need a machine that fetches them and does what each instruction says*
-- ***Fetch-Decode-Execute***
+→ ***needed to execute RISC instructions***
 
 <br>
 
@@ -61,6 +61,7 @@
 
 ***Datapath Hardware***
 
+***Datapath:***
 - *fully pipelined*
 - *synchronous write & asynchronous read*
 
@@ -68,8 +69,7 @@
 
 *5 Stages:*
 - ***Instruction Fetch***
-- ***Instruction Decode***
-- ***Register Fetch***
+- ***Instruction Decode/Register Fetch***
 - ***Execute & Address Calculation***
 - ***Memory Access***
 - ***Writeback***
@@ -137,28 +137,27 @@
 
 ***Speedup of Pipelining***
 
-- *Pipelining **doesn’t help the latency of a single instruction***
-- ***latency:*** *time have to wait from the start of the instruction to the end of the instruction*
+***Latency***
+- ***→ time have to wait from the start of the instruction to the end of the instruction***
+- → *pipelining does not help the latency of a single instruction*
 
 <br>
 
-- *it helps **reduce the throughput of the entire workload***
-- ***throughput**: the number of instruction that can be processed per unit time (instructions per clock cycle)*
+***Throughput***
+- → ***the number of instruction that can be processed per unit time (instructions per clock cycle)***
+- *pipelining helps **reduce the throughput of the entire workload**
 - *can start an instruction every clock cycle & finish an instruction every cycle - but no one instruction completes any faster*
-- *but, can run at a very high clock rate, as reduced logic depth of each pipeline stage*
+- *but - can run at a very high clock rate - as reduced logic depth of each pipeline stage*
 
 <br>
 
-- ***pipeline rate limited by slowest pipeline stage (critical path)***
+***Speedup***
+- ***→ pipeline rate limited by slowest pipeline stage (critical path)***
 - *potential speedup = number of pipe stages*
-
-<br>
 
 - *speedup comes from parallelism - for free - no new hardware*
 - *don’t have to add any additional logic to add pipeline stages, but there is a slight cost in adding the latches (transistor counts, energy etc.)*
 - *so cannot ‘overpipeline’ - clock rate would become dominated in time spent in the latches*
-
-<br>
 
 - ***speedup reduced by: unbalanced pipeline stage lengths, fill & drain times***
 
