@@ -190,7 +190,9 @@
 ***Load-to-Use Stall:***
 
 → ***data hazard in which the data being loaded by a load instruction is not yet available when needed by the next instruction***
+
 → *must stall*
+
 → *cannot be resolved by forwarding*
 
 ***example:***
