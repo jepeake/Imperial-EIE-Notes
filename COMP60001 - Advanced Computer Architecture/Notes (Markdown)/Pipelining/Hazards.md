@@ -5,7 +5,8 @@
 
 - - - 
 
-***Hazards:*** *prevent next instruction from executing during its designated clock cycle (preventing full throughput)*
+***Hazards:*** 
+→ *prevent next instruction from executing during its designated clock cycle (preventing full throughput)*
 
 <br>
 
@@ -21,13 +22,14 @@
 
 <br>
 
-- ***handling hazards generally introduces a bubble into the pipeline and reduces ideal CPI > 1***
+→ ***handling hazards generally introduces a bubble into the pipeline and reduces ideal CPI > 1***
 
 - - - 
 
 ***Pipeline CPI***
 
-- ***measure CPI → measure throughput***
+***CPI***
+→ *a measure of throughput*
 
 <br>
 
@@ -38,13 +40,13 @@
 
 ***Structural Hazard***
 
-- *Example Processor has only one memory for both instructions & data*
+- *imagine a processor has only one memory for both instructions & data*
 - *two different stages may need to access the memory at the same time*
 - *e.g. the load instruction & instruction 3 here - want to fetch instruction 3 from the same memory that the load instruction is loading value from*
 
 <br>
 
-- ***structural hazard*** *caused by simultaneous access*
+- *structural hazard caused by **simultaneous access***
 - *every time you do a load instruction you cause a simultaneous instruction to stall*
 
 <br>
@@ -55,19 +57,23 @@
 
 <br>
 
-- *when a pipeline bubble occurs, one or more stages of the pipeline are idle as the next instruction in the sequence cannot proceed immediately - here, caused by the simultaneous access of memory (structural hazard)*
+→ ***simultaneous access of memory (structural hazard) causes a bubble in the pipeline - where one or more stages of the pipeline are idle as the next instruction in the sequence cannot proceed immediately***
 
-<br>
+- - -
 
-***resolving structural hazards:***
+***Resolving Structural Hazards:***
 
-- *can resolve in hardware by **stalling newer instructions until older instructions have finished with the resource (inserting bubbles)***
-- *a structural hazard can always be resolved by **adding more hardware to the design** (in above example → adding a separate instruction & data memory to the machine)*
-- *classic 5-stage RISC pipeline has no structural hazards by design*
+***stalling:***
+- → *can resolve in hardware by stalling newer instructions until older instructions have finished with the resource (inserting bubbles)*
+
+***adding more hardware to design:***
+- *→ can always be resolved by adding more hardware to the design (in above example → adding a separate instruction & data memory to the machine)*
 
 - - - 
 
 ***Data Hazard***
+
+***example:***
 
 - *r1 computed in first instruction & then used in subsequent instructions*
 - *r1 value only written to the register file only in the write-back stage*
@@ -82,52 +88,42 @@
 
 - - - 
 
-***Forwarding***
-
-- *result of add instruction computed at the end of the 3rd stage - so can **forward** that value to where it is needed in the next instruction*
-- *in this case - forwarding from the output of the ALU to the input of the ALU for the next instruction*
-
-<br>
-
-- *can do so for other instructions - but may need to delay the values before forwarding*
-
-- - - 
-
 ***Type of Data Hazards***
 
 - ***Data Dependence (True Dependence)*** → *Read After Write (RAW) Hazard*
 - ***Anti Dependence*** → *Write After Read (WAR) Hazard*
 - ***Output Dependence*** → *Write After Write (WAW) Hazard*
 
-<br>
-
-***for RAW Data Hazards:***
-- *rather than wait for value → guess the value*
-- *effective for: branch prediction, stack pointer updates, memory address disambiguation*
-- *branch prediction → predict the branch target*
-
 - - - 
 
-***Three Strategies for Data Hazards***
+***Resolving Data Hazards***
 
 ***Stalling:***
 → *wait for hazard to clear by holding dependent instruction in the issue stage*
 
-<br>
-
 ***Forwarding:***
 → *resolve hazard earlier by bypassing value as soon as available*
-
-<br>
 
 ***Speculate:***
 → *guess on value & correct if wrong*
 
 - - - 
 
+***Forwarding***
+
+→ ***forwarding values to where it is needed in the next instruction - to resolve data dependencies & prevent stalling***
+
+***example:***
+
+- *result of add instruction computed at the end of the 3rd stage - so can **forward** that value to where it is needed in the next instruction*
+- *in this case - forwarding from the output of the ALU to the input of the ALU for the next instruction*
+- *can do so for other instructions - but may need to delay the values before forwarding*
+
+- - - 
+
 ***Stalling vs Forwarding***
 
-- *given a RAW Hazard*
+***given a RAW Hazard:***
 
 <br>
 
@@ -139,6 +135,7 @@
 
 ***Forwarding:***
 - *forwarding forwards without waiting for WB stage*
+- ***no bubbles***
 
 - - - 
 
@@ -199,7 +196,7 @@
 
 <br>
 
-- ***load-to-use stall***
+***load-to-use stall:***
 - *need to configure decode logic to implement pipeline stalls as well as configuring forwarding paths*
 
 - *at decode time - notices that instruction needs r1 that will not be available until the next cycle - decoder stalls that instruction for one cycle so that forwarding can be done - and then carried out forwarding*
@@ -239,6 +236,8 @@
 
 ***Control Hazards on Branches***
 
+***example:***
+
 - *start decoding branch instruction in the 2nd cycle & fetching 2nd instruction - but, branch if equal may be true and need to fetch instruction at PC+36 rather than PC+4*
 
 <br>
@@ -247,7 +246,7 @@
 
 - - - 
 
-***RISC-V Unconditional PC-Relative Jumps***
+***Unconditional Jumps***
 
 - *Unconditional Jump - JAL (PC Relative Jump)*
 
@@ -271,7 +270,7 @@
 
 - - - 
 
-***Pipelining for Unconditional PC-Relative Jumps***
+***Pipelining for Unconditional Jumps***
 
 - *pipeline execution of unconditional PC-Relative Jumps*
 
@@ -282,7 +281,7 @@
 
 - - - 
 
-***RISC-V Conditional Branches***
+***Conditional Branches***
 
 - *need Opcode, PC, Register Value, Offset*
 
