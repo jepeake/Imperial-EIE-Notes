@@ -22,8 +22,8 @@
 ***Examples***
 
 ***Occupancy < Latency***
-- *→ e.g. 3-stage pipelined multiplier (latency = 3 cycles) 
-- *→ first stage is blocked for one cycle - blocking the unit from receiving other values (occupancy) 
+- *→ e.g. 3-stage pipelined multiplier (latency = 3 cycles)*
+- *→ first stage is blocked for one cycle - blocking the unit from receiving other values (occupancy)* 
 - *→ so occupancy is less than latency for that functional unit*
 
 ***Occupancy > Latency***
@@ -42,11 +42,11 @@
  → ***performance of high-speed computers usually limited by memory bandwidth & latency (number of memory accesses per unit time & time taken for a single access)***
 
 ***memory bandwidth:***
-- *→ every instruction needs to be accessed from instruction memory 
-- → *some number of instructions access data memory
+- *→ every instruction needs to be accessed from instruction memory*
+- → *some number of instructions access data memory*
 
 ***memory latency:***
-- *→ time taken to perform memory access operation 
+- *→ time taken to perform memory access operation* 
 - *→ >> processor cycle time*
 
 ***memory occupancy:***
@@ -56,16 +56,11 @@
 
 ***Processor-DRAM Gap***
 
-![[Pasted image 20230915163845.png|400]]
-
 - *DRAM getting denser & denser - but speed not increasing significantly (compared to processor speeds)*
 
 - - - 
 
 ***Physical Size Affects Latency***
-
-***on-chip memory (SRAM):***
-![[Pasted image 20230915163941.png|400]]
 
 ***bigger memory***
 - → *slower to access*
