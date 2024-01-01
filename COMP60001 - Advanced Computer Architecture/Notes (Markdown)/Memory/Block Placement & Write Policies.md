@@ -5,7 +5,7 @@
 
 - - - 
 
-***4 Questions for Memory Hierarchy*
+***4 Questions for Memory Hierarchy***
 
 - *Where can a block be placed in the cache? (**Block Placement**)*
 - *How is a block found if it is in the cache? (**Block Identification**)*
@@ -14,16 +14,26 @@
 
 - - - 
 
-***Block Placement*
+***Block Placement***
 
 ***where can a block be placed in the cache?***
 
-![[Pasted image 20231117173010.png|400]]
+***direct-mapped cache:***
+- *→ block can be placed in one cache location - determined by low-order address bits*
+
+***two-way set-associative cache:***
+- → *set is determined by low-order address bits*
+- → *block can be placed in either of two cache locations*
+
+***fully-associative cache:***
+- → *block can be placed in any location in cache*
+
+
 
 ***increasing associativity:***
-→ *more comparators & larger energy cost*
-→ *better hit rate (but diminishing returns)*
-→ *reduced storage layout sensitivity (more predictable → less likely that two addresses which map to the same cache block are overwriting each other as in direct-mapped)*
+- → *more comparators & larger energy cost*
+- → *better hit rate (but diminishing returns)*
+- → *reduced storage layout sensitivity (more predictable → less likely that two addresses which map to the same cache block are overwriting each other as in direct-mapped)*
 
 - - - 
 
