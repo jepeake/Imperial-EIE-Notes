@@ -59,7 +59,7 @@
 ***cache set:*** 
 - *a group of cache blocks within a cache (in set-associative)*
 - *in fully associative cache → one set contains all of the blocks*
-- *in set associative cache → each set contains are few blocks which are indexed by the same tag
+- *in set associative cache → each set contains are few blocks which are indexed by the same tag*
 
 <br>
 
@@ -128,7 +128,7 @@
 
 ***Disadvantage of Set Associative Cache***
 
-- *extra hardware on the critical path - slowing down (given only have 5-8 gate delays)
+- *extra hardware on the critical path - slowing down (given only have 5-8 gate delays)*
 - *may only discover you have a hit - after data becomes available*
 - ***need more comparators - so more hardware/transistors (higher energy cost)***
 
