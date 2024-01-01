@@ -5,7 +5,7 @@
 
 - - - 
 
-***Intel Skylake Quad-Core Die*
+***Intel Skylake Quad-Core Die***
 
 ***example:***
 
@@ -34,7 +34,7 @@
 
 - - - 
 
-***Types of Cache*
+***Types of Cache***
 	
 - *different style of cache designs (mappings)*
 
@@ -64,7 +64,7 @@
 <br>
 
 ***ways:***
-- *ways represent the number of cache blocks within a single cache set
+- *ways represent the number of cache blocks within a single cache set*
 - *(2-way set associative cache → each cache set has 2 blocks → cache is split into 2 ways)*
 
 <br>
@@ -115,7 +115,7 @@
 
 - - - 
 
-  ***Two-Way Set Associative Cache*
+  ***Two-Way Set Associative Cache***
 
 - *similar to direct-mapped cache, but in parallel, in two-halves*
 - *use same index bits to access into two direct-mapped cache structures*
@@ -126,7 +126,7 @@
 
 - - - 
 
-***Disadvantage of Set Associative Cache*
+***Disadvantage of Set Associative Cache***
 
 - *extra hardware on the critical path - slowing down (given only have 5-8 gate delays)
 - *may only discover you have a hit - after data becomes available*
@@ -134,7 +134,7 @@
 
 - - -
 
-***Intel Pentium 4 Level-1 Cache*
+***Intel Pentium 4 Level-1 Cache***
 
 *example:*
 
