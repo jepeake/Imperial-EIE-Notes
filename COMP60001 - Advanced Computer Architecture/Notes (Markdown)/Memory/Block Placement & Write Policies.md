@@ -28,8 +28,6 @@
 ***fully-associative cache:***
 - → *block can be placed in any location in cache*
 
-
-
 ***increasing associativity:***
 - → *more comparators & larger energy cost*
 - → *better hit rate (but diminishing returns)*
@@ -41,14 +39,12 @@
 
 ***how is a block found if it is in the cache?***
 
-![[Pasted image 20231117173347.png|500]]
-
 ***tag***
 - *tag associated with data - used to identify block*
 - *tag is the high bits of the block address, that does not include the index or block offset*
 
 ***increasing associativity***
-- *as associativity is increased - if total cache size stays the same - increases the number of blocks per set → fewer index bits needed→ smaller tags
+- *as associativity is increased - if total cache size stays the same - increases the number of blocks per set → fewer index bits needed→ smaller tags*
 
 ***reduce overhead of tag checking***
 - *to reduce overhead of tag checking (identifying blocks) → use larger cache blocks → tag memory overhead per cached item reduces*
@@ -60,6 +56,8 @@
 ***which block should be replaced on a miss?***
 
 *with direct-mapped → only one choice*
+
+<br>
 
 *with set/fully associative → choice:*
 → *ideally: least-soon to be re-used*
@@ -88,12 +86,18 @@
 - *when performing a write/load instruction - need to check cache to see if there is a cached copy of that data*
 - *if cached copy is present, must be updated - should we also update the next level of memory hierarchy, main memory?*
 
+  <br>
+
 ***on cache hit***
 - → ***write-through (WT) or write-back (WT) strategies***
+
+<br>
 
 ***write-through*** 
 - → *information written to both the block in the cache & the block in lower-level memory*
 - → *always combined with write buffers so CPU does not have to wait for lower-level memory*
+
+<br>
 
 ***write-back*** 
 - → *information written only to block in cache*
@@ -121,6 +125,8 @@
 - *this delay can lead to increased cache performance in cache as multiple writes to the same location can be aggregated into a single write into main memory
 - *this optimization reduces memory bus traffic and minimizes the performance impact of frequent write operations*
 
+<br>
+
 ***WT vs WB:***
 
 *WT Advantages:*
@@ -146,11 +152,16 @@
 - ***cache coherency issues →*** *required more complex cache coherence protocols in multi-processor systems to ensure data consistency across caches*
 - ***data integrity risks→*** *risk of data loss in the event of a system crash as most recent updates are only stored in the cache*
 
+<br>
+
 ***on cache miss:***
 - → ***write-allocate or no-write allocate***
 
 - ***write-allocate**: fetch into cache*
 - ***no-write allocate**: only write to main memory*
 
+<br>
+
 *common combinations:*
-- *write th
+- *write through and no-write-allocate (writes to main memory on both cache hit & miss)*
+- *write-back with write-allocate (writes to cache on both cache hit & miss)*
