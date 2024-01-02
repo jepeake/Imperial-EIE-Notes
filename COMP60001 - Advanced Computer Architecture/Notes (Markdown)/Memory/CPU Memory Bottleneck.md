@@ -8,14 +8,19 @@
 ***Computer Architecture Terminology***
 
 ***Latency (in seconds or cycles)*** 
-→ *time taken for a single operation from start to finish*
+- → *time taken for a single operation from start to finish*
+
+***Throughput (in operations/second or operations/cycle)***
+- → *rate at which operations are being performed*
+- → *no. operations in a given time*
 
 ***Bandwidth (in operations/second or operations/cycle)*** 
-→ *maximum rate at which operations can be performed (maximum throughput) 
-(bus → maximum rate at which data transferred)*
+- → *maximum rate at which operations can be performed (maximum throughput)*
+- → *maximum no. operations in a given time*
+- *(bus → maximum rate at which data transferred)*
 
 ***Occupancy (in seconds or cycles)*** 
-→ *time during which the unit is blocked on an operation (structural hazard)*
+- → *time during which the unit is blocked on an operation (structural hazard)*
 
 - - - 
 
