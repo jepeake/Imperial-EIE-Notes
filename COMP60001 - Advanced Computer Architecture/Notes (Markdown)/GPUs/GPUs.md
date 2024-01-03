@@ -25,8 +25,6 @@
 
 ***Comparison with CPUs***
 
-![[Pasted image 20231122224636.png|500]]
-
 ***GPUs:***
 - → *simpler cores*
 - → *much greater area devoted to **computation rather than control logic***
@@ -37,8 +35,6 @@
 - - - 
 
 ***Example (NVIDIA G80)***
-
-![[Pasted image 20231122224914.png|600]]
 
 ***cores:***
 - *16 processor cores (streaming multiprocessors)*
@@ -54,8 +50,6 @@
 - - - 
 
 ***Texture/Processor Cluster (TPC)***
-
-![[Pasted image 20231123103434.png|400]]
 
 ***SM:***
 - → *streaming multiprocessor*
@@ -78,7 +72,7 @@
 - → *constant read-only cache*
 
 ***I Cache:***
-- → *instruction cache
+- → *instruction cache*
 
 ***Geometry Controller:***
 - → *directs all primitive & vertex attribute & topology flow in the TPC*
@@ -107,7 +101,7 @@
 ***warp: specific collection of threads that are executed simultaneously by GPU (like threads in CPU)***
 
 ***warps & threads:***
-- → ***many fetch-execute devices** (16 SMs)
+- → ***many fetch-execute devices** (16 SMs)*
 - → *each SM uses **fine-grain multithreading FGMT** to run 32 warps per SM*
 - → ***high number of warps to tolerate high memory access latency** (can hide memory access latency of some warps by performing computation with other warps simultaneously)*
 - → ***wraps run on SMs***
@@ -137,13 +131,12 @@
 - → *needed to manage thousands of threads*
 
 ***CUDA Execution Model:***
-![[Pasted image 20231123112157.png|300]]
 - *CUDA → C Extension
 - → *serial CPU code & parallel GPU code (kernels)*
 
 ***GPU Kernel:***
 - → *each kernel is a C function (which can be run by 1000s of threads)*
-- → ***each thread executes an instance of a kernel function on a single element of data**
+- → ***each thread executes an instance of a kernel function on a single element of data***
 - → *a group of threads form a **thread block** (larger structure containing several warps)*
 - → *blocks are unit of allocation into SMs*
 - → *thread blocks are organised into a **grid***
@@ -161,8 +154,9 @@
 ***CUDA - Example*** 
 
 ***DAXPY:***
+
 → *parallel loop that performs scalar a * vector x + vector y*
-![[Pasted image 20231123121218.png|500]]
+
 ***in CUDA:***
 - → *split into CUDA Kernel + Host Code which launches threads*
 - → ***Kernel Code → specifies code to be run by a single thread (each thread runs an instance of the kernel)***
@@ -173,8 +167,9 @@
 - → ***thread uses size of grid/size of blocks to locate to determine place in iteration space (i)***
 
 ***when compiled:***
+
 → *intermediate assembly code*
-![[Pasted image 20231123121912.png|500]]
+
 - → *i calculated from thread/block IDs*
 - → *conditional stores in predicate register*
 - → *if all bits of predicate register are true - branch to finish (if any bit set - execute body using predicate bits to select which threads are active)*
@@ -192,11 +187,11 @@
 - → ***each block contains some number of warps (groups of 32 threads)***
 - → *trying to **fill machine with enough warps such that FGMT can fully occupy the machine & have enough memory accesses in-flight to hide the memory access latency***
 
-![[Pasted image 20231123122516.png|500]]
+
 
 - → *may break up blocks into smaller blocks to reduce load-balancing issue (work not distributed evenly among SMs)*
 
-![[Pasted image 20231123123042.png|500]]
+
 
 ***inside each SM:***
 - → *warps are dynamically scheduled*
@@ -211,7 +206,7 @@
 
 ***shared memory:***
 - → *scratchpad memory (user-managed cache) **shared by all warps (& therefore all blocks)***
-- → *shared memory **partitioned between blocks** (if multiple blocks - how much shared memory does each block need)
+- → *shared memory **partitioned between blocks** (if multiple blocks - how much shared memory does each block need)*
 - → *partitioning can be configured*
 - → ***imposes limit on number of blocks that can be allocated to an SM***
 
@@ -239,7 +234,7 @@
 - → *individual **threads** composing a SIMT warp **start together at the same program address (free to branch & execute independently)**
 - → *at instruction issue time - select ready-to-run warp & issue next instruction to that warp’s active threads*
 
-![[Pasted image 20231123123537.png|250]]
+
 
 - → *each instruction operates on a **32-wide vector***
 - → *each **thread** (element-wide slice of a vectors) **contains the state of a CUDA thread***
@@ -264,7 +259,6 @@
 - → *to optimise program - **minimise divergence within threads in a warp***
 
 ***predicate bits can be used to handle divergent paths without branching:***
-![[Pasted image 20231202214149.png|500]]
 
 - - - 
 
@@ -304,14 +298,12 @@
 
 ***Spatial Locality & Coalescing***
 
-![[Pasted image 20231202221804.png|500]]
-
 ***SIMD:***
 - → *vectorised the loop for SIMD execution (using directives or intrinsics)*
-- → *directive (tells the compiler to generate vectorised code for the inner loop)
+- → *directive (tells the compiler to generate vectorised code for the inner loop)*
 - → ***good spatial locality by accessed array elements in row-major order meaning data is accessed sequentially in memory***
 - → *intrinsic (generates SIMD instructions)*
-- → ***good spatial locality as processes chunks of array that are contiguous in memory*
+- → ***good spatial locality as processes chunks of array that are contiguous in memory***
 - → ***good utilisation of cache***
 
 ***SIMT:***
