@@ -7,9 +7,9 @@
 
 ***Average Memory Access Time***
 
-***AMAT = Hit Time + Miss Rate x Miss Penalty**
+***AMAT = Hit Time + Miss Rate x Miss Penalty***
 
-*Three ways to improve AMAT:
+*Three ways to improve AMAT:*
 - ***Reduce Miss Rate***
 - *Reduce Miss Penalty*
 - *Reduce Hit Time*
@@ -41,8 +41,6 @@
 
 ***benchmark study:***
 
-![[Pasted image 20231102215014.png|500]]
-
 ***compulsory misses:***
 - → *compulsory misses are vanishingly few*
 
@@ -55,8 +53,6 @@
 ***3Cs Relative Miss Rate***
 
 *% misses*
-
-![[Pasted image 20231102215241.png|500]]
 
 ***increasing cache size:***
 - → *for small cache → most misses capacity misses*
@@ -74,7 +70,7 @@
 ***SPEC CPU Benchmarks:***
 - → *a suite of commonly used CPU benchmarks*
 - → *concerns CPU-intensive applications*
-- → *much of the published research depends on the SPEC CPU benchmarks
+- → *much of the published research depends on the SPEC CPU benchmarks*
 
 - → *each **benchmark report** includes elaborate details of software & hardware configuration*
 - → *including details of compiler optimisation flags*
@@ -85,6 +81,8 @@
 - → *performance is averaged across the suite to produce the overall speed result*
 - → *the geometric mean is used*
 
+<br>
+
 ***Integer Benchmarks:***
 - → *measure performance of executing integer arithmetic*
 - → *integer arithmetic used for logical operations/addressing/counting*
@@ -92,6 +90,8 @@
 - → *hard to parallelise*
 
 - → *integer operations common in general-purpose computing - such OS/Text Processing/Databases etc.*
+
+<br>
 
 ***Floating Point Benchmarks:***
 - → *measure performance of executing floating-point arithmetic*
@@ -101,11 +101,17 @@
 - → *floating -point operations common for applications that require large range of numbers/precise measurements - such as DSP/Graphics/Scientific Computing*
 - → *floating-point operations in general more complex than integer operations & may take longer to execute - require handling numbers of varying magnitude & precision*
 
+<br>
+
 ***Speed:***
-- → ***execution time for one run of the program (possibly using multiple cores)
+- → ***execution time for one run of the program (possibly using multiple cores)***
+
+<br>
 
 ***Rate:***
 - → ***maximum throughput of completed jobs/second***
+
+<br>
 
 ***Criteria for Good Benchmark Design:***
 - ***Relevance:** benchmarks should represent the workloads & applications that will be commonly used*
@@ -121,36 +127,33 @@
 
 ***Reducing Miss Rate***
 
-- → ***Change Block Size*
+- → ***Change Block Size***
 
-- → ***Change Associativity*
+- → ***Change Associativity***
 
 - → ***Change Compiler***
-
-- - - 
-
-***Recall: Cache***
-
-![[Pasted image 20231102220600.png|500]]
 
 - - - 
 
 ***Increasing Block Size***
 
 → ***exploits spatial locality to reduce miss rate***
+
 → ***increases miss penalty***
 
-***miss rate vs block size (for varying cache capacities):***
-
-![[Pasted image 20231102222951.png|500]]
+<br>
 
 ***spatial locality:***
 - *initially the **miss rate improves with increasing block size → due to spatial locality** (more data copied into cache at once)*
+
+<br>
 
 ***for small caches:***
 - → *with very large cache blocks, when the cache rate is small → **miss rate deteriorates as large block sizes take up a large amount of the total cache capacity** (1KB cache with 256byte blocks → 4 blocks → 4 distinct memory regions in cache)*
 - → *if cache lines are too large → may not be well utilised (large amount of data may be fetched into the cache & then never used)*
 - → *if speculatively-loaded data is loaded into the large cache blocks → a large amount of space becomes wasted*
+
+<br>
 
 ***miss penalty:***
 - → ***miss penalty will increase with larger blocks**, as larger blocks take longer to load*
@@ -160,15 +163,13 @@
 
 ***Increasing Associativity***
 
-***AMAT vs Associativity (for varying cache sizes):***
-
-![[Pasted image 20231102223644.png|500]]
-
 ***increasing associativity:***
 - *increasing associativity → increases depth of cache selector logic (more blocks to select from)*
 - *increasing associativity → decreases miss rate → but cache hit time is increased slightly (due to greater selector logic depth)*
 
 - *for larger cache sizes → increasing associativity does not improve AMAT*
+
+<br>
 
 ***way prediction:***
 - *want the **cycle/hit time of a direct-mapped cache (no selector logic) & miss rate of an associative cache***
@@ -179,7 +180,10 @@
 ***Victim Cache***
 
 **→ *combines fast hit time of direct mapped & miss rate of associative cache (avoiding conflict misses)***
+
 → *adding a buffer to place data discarded from cache*
+
+<br>
 
 ***structure:***
 - *direct mapped cache above*
@@ -188,7 +192,7 @@
 - → *fully associative can be very small → small energy cost & fast cycle time*
 - *→ direct mapped cache → fast cycle time*
 
-![[Pasted image 20231102224624.png|500]]
+<br>
 
 ***operation:***
 - ***on access** → check both direct-mapped & victim cache in parallel*
@@ -201,36 +205,37 @@
 ***Skewed-Associative Cache***
 
 → ***reduce conflict misses by using different indices in each cache way***
+
 → *introducing a **hash function***
+
+<br>
 
 ***hash function:***
 - → *a mathematical function that converts any digital data into an output string with a fixed number of characters*
 - → *e.g. XORing some index bits with tag bits & reordering index bits*
 
-![[Pasted image 20240102103339.png|500]]
-
-![[Pasted image 20231102231309.png|500]]
+<br>
 
 ***conventional set-associative:***
 - *→ in conventional 2-way set associative cache → to blocks map to the same set → can store 2 of A,B,& C but not all 3*
+
+<br>
 
 ***skewed set-associative:***
 - *→ in skewed 2-way set associative cache → depending on the hash function → all 3 could map to the same set in the left way & all 3 could map to different sets in the right way
 - → *A,B,C conflicting in the left way*
 - → *more likely that the A,B,C will map to different sets → can store all 3 at once in cache*
 
-***loops & arrays:***
+<br>
 
-![[Pasted image 20240102104237.png|400]]
+***loops & arrays:***
 
 ***skewed-associative:***
 - → *suppose traversing three arrays A/B/C*
-- → *suppose $f_0(A[i]) = f_0(B[i]) = f_0(C[i])$ & $f_1(A[i]) = f_1(B[i]) = f_1(C[i])$*
+- → *suppose* $f_0(A[i]) = f_0(B[i]) = f_0(C[i])$ & $f_1(A[i]) = f_1(B[i]) = f_1(C[i])$
 - *→ A/B/C conflict in both ways of the skewed associative cache (only 2 can be stored at once)*
 - → *unlikely that this is the case for each element in the array we are traversing*
 - → ***remaps with pseudo-random cache functions on every index of the arrays A/B/C***
-
-![[Pasted image 20240102104633.png|400]]
 
 ***set-associative:***
 - → *suppose traversing three arrays A/B/C*
@@ -240,10 +245,14 @@
 - *→ the conflict would remain for every element in the arrays A/B/C (arrays addresses in sequence & no pesudorandomness)*
 - → ***set associative worse performance than skewed-associative for random addresses & much worse performance for array accesses***
 
+<br>
+
 ***skewed-associative vs set-associative:***
 - *with skewed-associativity → **can get same miss rate with reduced associativity***
 - → ***more predictable average performance** (pesudorandomness spreads ‘unlucky’ outcomes uniformly → hash changing on every access)*
 - → ***harder to write a program that is free of associativity conflicts** (cannot predict hash functions outputs) → easy for set-associative*
+
+<br>
 
 ***costs**:*
 - *needs one address decoder per way (**added hardware**)*
@@ -263,7 +272,7 @@
 - ***→ a better way of exploiting spatial locality (fetching data ahead of time before they are needed for execution)***
 - → *adds a stream buffer → hardware prefetching mechanism*
 
-![[Pasted image 20240102105205.png|400]]
+<br>
 
 ***operation:***
 - ***on access** → direct-mapped cache & stream buffer accessed in parallel*
@@ -273,10 +282,14 @@
 - → *fetch data for that miss into the direct-mapped cache (either from the stream buffer or next level of memory hierarchy)*
 - → *initiate fetch for the next cache line from memory hierarchy into stream buffer*
 
+<br>
+
 ***spatial locality:***
 - → ***stream buffer exploits spatial locality by prefetching next cache lines before they are needed** during execution (predicting that the next cache lines are going to be needed by execution)*
 - → ***prediction mechanism** could be changed to enhance accuracy & predict when a sequence of misses occurs (similar to branch prediction mechanism)*
 - → ***much faster to access the cache lines from stream buffer** - rather than accessing main memory*
+
+<br>
 
 ***in modern CPUs:***
 - → *more likely in modern CPUs that **data will be prefetched & allocated into the direct-mapped cache** (rather than having a stream buffer)*
@@ -284,12 +297,18 @@
 - → *with bigger cache - **having speculatively executed data directly in the cache less of a concern** (& stream buffer not needed)*
 - → ***many modern CPUs have hardware prefetching***
 
+<br>
+
 ***memory accesses:***
 - → *adds extra speculative memory accesses → **extra memory bandwidth needed***
+
+<br>
 
 ***multiple stream buffers:***
 - → *can be scaled up using **multiple stream buffers** → **each maintaining a separate prefetch stream***
 - → *for each new miss → a new stream buffer allocated*
+
+<br>
 
 ***multi-way stream buffer:***
 - → *accesses multiple stream buffers simultaneously*
@@ -297,23 +316,25 @@
 - -. *multiple stream often important for D-Cache misses (e.g. traversing multiple arrays)*
 → *can also prefetch k values at a time - rather than only the next value (stream of values)*
 
-![[Pasted image 20240102105626.png|400]]
-
 - - - 
 
 ***Decoupled Access Execute***
 
 - → *most programs have no dependence between the instructions that generate memory addresses (integer) & instructions that use memory results (floating-point)*
-- → ***separate the instructions that generate addresses from the instructions that use memory results**
+- → ***separate the instructions that generate addresses from the instructions that use memory results***
 - → ***let the address-generation side of the machine run ahead***
 
-![[Pasted image 20240102111434.png|300]]
+<br>
 
 - ***run instructions that generate memory addresses on the access processor***
 - → *when data arrives from memory system → execute arithmetic operations on execute processor*
 
+<br>
+
 - → ***access processor runs ahead of execute processor (runahead)***
-- → *can exploit parallelism in access processor to stream values to execute processor as fast as possible
+- → *can exploit parallelism in access processor to stream values to execute processor as fast as possible*
+
+<br>
 
 - → ***assumes no dependencies between FP results & addresses being generated***
 - *dependency occurs → loss of decoupling event*
@@ -326,22 +347,28 @@
 - ***integer pipeline:** control operations, incrementing pointers, address calculation for load/store*
 - ***floating point pipeline:** multi-cycle data computations*
 
-![[Pasted image 20230909234653.png|500]]
+<br>
 
 ***operation:***
 - *instructions issued from integer pipeline*
 - *example: **load instruction***
-- *let the load address go to the memory & have microOp telling the floating point pipeline what operation needs to be done and in how many cycles the load data will be received directly from the integer pipeline 
+- *let the load address go to the memory & have microOp telling the floating point pipeline what operation needs to be done and in how many cycles the load data will be received directly from the integer pipeline*
 - *addresses are generated in the integer pipeline - and data is forwarded directly to the floating point pipeline*
 - *microOps stored in microOp queue (FIFO) - storing FP operations*
 - *load data is stored in the load data queue*
 - *floating point pipeline fetches the microOp & load data, performs the computation, & updates register*
 
+<br>
+
 - *for a **store instruction** - store address can be generated early by the integer pipeline (if it is not blocked) & put in the store address queue*
 - *the floating point pipeline then later puts the data to be stored in the store data queue after executing and finding data value*
 - *decoupling → addresses produced in the integer pipeline, data received & produced in the floating point pipeline*
 
+<br>
+
 - ***assuming in-order execution***
+
+<br>
 
 ***dependencies:***
 - *want to check if we have a RAW dependency (there is an earlier store instruction that wants to store data at any address that is then loaded from later - it might not have stored intime for the load) - by checking the load address against the queued store addresses*
