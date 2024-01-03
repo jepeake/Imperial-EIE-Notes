@@ -21,7 +21,7 @@
 - → *indirect function calls*
 
 - ***direct branch** → provides the address of the target instruction directly as part of the branch instruction*
-- ***indirect branch** → target address is not specified directly within the branch instruction → instruction specifies a register or memory location that contains the target address
+- ***indirect branch** → target address is not specified directly within the branch instruction → instruction specifies a register or memory location that contains the target address*
 
 - - - 
 
@@ -30,7 +30,7 @@
 - → ***given the current PC - tells you what the next PC should be (while fetching current branch instruction → predicting what next instruction should be)***
 - → *in the instruction fetch stage of the processor (in parallel with instruction fetch)*
 
-![[Pasted image 20240103162351.png|400]]
+<br>
 
 ***predicted PC:***
 - *→ the predicted PC is the **address to which the branch instruction transferred control to the last time it was taken***
@@ -46,17 +46,12 @@
 - → *updated only by taken branches*
 - → *direction predictor determines if BTB uses*
 
-![[Pasted image 20240103163038.png|400]]
-
 - - - 
 
 ***5-Stage Pipeline***
 
-![[Pasted image 20231101195252.png|400]]
 
 - *→ extend with BTB*
-
-![[Pasted image 20231101195309.png|400]]
 
 - ***BTB in parallel with instruction fetch from I-cache***
 - *→ fetches next PC prediction*
@@ -73,7 +68,6 @@
 
 - *for conditional branches*
 
-![[Pasted image 20231101195636.png|400]]
 
 - ***simultaneously check BTB & determine predicted takenness of branch***
 - *→ if BTB hit → target address = predicted PC of conditional branch*
@@ -82,7 +76,6 @@
 - → *if taken → use target from BTB*
 - → *otherwise, increment PC normally*
 
-![[Pasted image 20231101200046.png|400]]
 
 - ***BTB & direction predictor accessed in parallel to instruction cache → in IF stage***
 - *if predicted taken → updates next PC to BTB predicted PC*
@@ -97,7 +90,6 @@
 
 ***when should the branch prediction (BTB) be updated in the dynamically scheduled processor?***
 
-![[Pasted image 20231101202213.png|400]]
 
 - *when the branch outcome is known?*
 - *when the branch is committed?*
@@ -118,17 +110,14 @@
 - *target specified in memory on the stack (or in a special register on MIPS)* 
 - → *should be somewhat predictable*
 
-![[Pasted image 20231101202632.png|400]]
 
 - *returns the to next instruction after the first JSR*
 - *this is set to the predicted PC of the return instruction in the BTB*
 - *next time returns from the function (when called from somewhere else) → will return to the instruction after the first call, based on the value in the BTB → incorrect target for new call*
 
-![[Pasted image 20231101203141.png|400]]
 
 *deep call stack:*
 
-![[Pasted image 20231101203331.png|400]]
 
 - ***stack → should be easy to predict***
 - → ***add a Return Address Predictor - containing a stack of the return addresses***
@@ -138,7 +127,6 @@
 ***Return Address Predictor***
 
 - *extend branch address predictor → **+ return address predictor***
-
 ![[Pasted image 20231101203712.png|400]]
 
 - *when a JSR instruction is decoded → **pushes the return address (address of the instruction immediately following the call) onto the RAP stack***
@@ -160,7 +148,6 @@
 
 ***how could the RAP mispredict a branch target?***
 
-![[Pasted image 20231101204125.png|400]]
 
 - → ***call stack may be deeper than the RAP stack→ & returns empty***
 
@@ -172,7 +159,6 @@
 
 ***when should the branch prediction be updated in the dynamically scheduled processor?***
 
-![[Pasted image 20231102204231.png|400]]
 
 - → *BTB updated when a branch is committed*
 
@@ -201,9 +187,4 @@
 
 - - - 
 
-***Summary***
-
-![[Pasted image 20231102213722.png|400]]
-
-- - - 
 
