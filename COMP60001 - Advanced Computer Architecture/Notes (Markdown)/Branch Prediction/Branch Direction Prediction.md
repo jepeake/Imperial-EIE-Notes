@@ -10,9 +10,13 @@
 - ***→ attempt to solve control hazards that can occur in any pipelined processor***
 - *→ branch instructions can occur a lot (& will arrive up to n times faster in an n-issue processor)*
 
+<br>
+
 ***Amdahl’s Law:*** 
 - → ***the overall performance improvement gained by optimising a single part of a system is limited by the fraction of time that improved part is actually used***
-- → *an n-issue processor (that has been optimised to issue n instructions per cycle & has a lower CPI) will suffer a greater relative impact from control stalls
+- → *an n-issue processor (that has been optimised to issue n instructions per cycle & has a lower CPI) will suffer a greater relative impact from control stalls*
+
+<br>
 
 ***Dynamically Scheduled Machine:***
 - *with **speculative dynamic instruction scheduling & register renaming** → can speculate many instructions at once (only limited by number of shelves on which we can put issued instructions, could be 100s)*
@@ -26,6 +30,8 @@
 - *→ branch mispredictions are **expensive***
 - *want to **minimise the likelihood of a misprediction***
 
+<br>
+
 ***Alternative Prediction Schemes:***
 - *→ **having enough threads per core***
 - → *extending the instruction set with **predication***
@@ -38,7 +44,7 @@
 ***example:***
 - *→ statically scheduled 5-stage pipelined processor with 4 threads per core*
 
-![[Pasted image 20240103151341.png|500]]
+<br>
 
 ***multithreading:***
 - *fetching from 4 PCs in a round-robin fashion*
@@ -56,17 +62,21 @@
 
 - → ***avoid branch prediction by turning branches into conditionally executed instructions***
 
-![[Pasted image 20240103151643.png|500]]
+<br>
 
 ***predicate registers:***
 - *processor extended with **predicate (p) registers (one-bit) which hold the outcome of conditional tests***
-- ***condition is evaluated & loaded into predicate register**
-- *if the predicate register has** value 1 → instructions that depend on that predicate register are executed***
+- ***condition is evaluated & loaded into predicate register***
+- *if the predicate register has value 1 → instructions that depend on that predicate register are executed*
 - *control hazard eliminated & **converted to a data hazard** (data dependence between p-register in condition & in following instruction)*
 - *enables the **avoidance of conditional branches***
 
+<br>
+
 ***branch prediction preference:***
 - *branch prediction preferred when **larger loop bodies → as can jump over the loop body rather than having to run through the predicate instructions** before discovering the predicate is false*
+
+<br>
 
 ***predication preference:***
 - *predication preferred **when issuing many instructions per cycle** → as a conditional jump in a sequence of instructions will jump out of that sequence of instructions (which could be large) - leaving that sequence underutilised*
@@ -83,33 +93,29 @@
 - *the following instruction has already been fetched → execute it and then take the branch*
 - *→ **delaying just one instruction allows for a proper decision** & branch target address in a 5-stage pipeline (eliminating control hazards)*
 
-***example:***
-![[Pasted image 20231026185514.png|500]]
-
-- *SW R3 X is following the branch instruction → so will be executed regardless*
-- *if the branch is taken → SW R4 X will not execute (will be jumped over)*
-- *if the branch is not taken → SW R4 X will execute*
-
-- *SW R3 X → executed regardless*
-- *SW R4 X → executed only if the condition is true*
+<br>
 
 ***where to get instructions to fill branch delay slots?***
-
-![[Pasted image 20231026190619.png|100]]
 
 *can get instruction from:*
 - ***before the branch instruction (useful work)***
 - ***from the target address (only useful when the branch taken)***
 - ***from fall through (only useful when the branch not taken)***
 
+<br>
+
 - *fill delay slot with instruction before the branch*
 - *→ if not possible - fill with an instruction from the target address or fall through (cannot be a store instruction)*
+
+<br>
 
 - ***usefulness of branch delay slot → function of compiler optimisation***
 - *compiler effectiveness for a single branch delay slot:*
 - *→ fills about 60% of branch delay slots*
 - *→ about 80% of instructions executed in branch delay slots are useful computation*
 - *→ about 50% of slots are usefully filled*
+
+<br>
 
 ***cancelling branches:***
 - *to increase the utilisation of branch delay slots: **cancel branches***
@@ -118,6 +124,8 @@
 - ***likely taken** → speculatively executes instruction in the delay slot, & cancels if branch not taken*
 - ***likely not taken** →  speculatively executes instruction in the delay slot, & cancels if branch taken*
 - *→ slightly increases fraction of branch delay slots that can be filled*
+
+<br>
 
 ***downside of delayed branches:***
 - ***additional complexity*** *→ added complexity for compilers, has to ensure instructions in delay slots are safe to execute whether the branch is taken or not (exposing microarchitectural details to the compiler)*
@@ -133,15 +141,21 @@
 - → ***want to fetch the correct (predicted) next instruction without any stalls***
 - *→ need the prediction before the preceding instruction (branch) has been decoded*
 
+<br>
+
 *two kinds of branch prediction:*
 - ***direction prediction** (is a conditional branch taken or not)*
 - ***target prediction** (what is the target address of the branch instruction)*
 
+<br>
+
 - ***target prediction needed for indirect branches** (e.g. indirect branch to a target address stored in a register) & determining target of conditional branch once predicted taken*
 - *most common cases of indirect branch → return addresses (take return address from the stack & indirect branch to that address)*
 
+<br>
+
 - ***direct branch** → provides the address of the target instruction directly as part of the branch instruction*
-- ***indirect branch** → target address is not specified directly within the branch instruction → instruction specifies a register or memory location that contains the target address
+- ***indirect branch** → target address is not specified directly within the branch instruction → instruction specifies a register or memory location that contains the target address*
 
 - - - 
 
@@ -170,9 +184,7 @@
 - ***when a branch instruction is executed** → update the table value with the corresponding PC index to 0/1 depending on whether the branch was taken or not taken*
 - ***when we encounter that branch again** → index the branch history table, & predict based upon whether the branch was taken/not taken last time*
 
-![[Pasted image 20231026202757.png|250]]
-
-![[Untitled.png]]
+<br>
 
 ***problems:***
 
@@ -181,8 +193,6 @@
 
 ***loops:***
 - *in a loop → a 1-bit BHT will cause 2 mispredictions*
-
-![[Pasted image 20231026203703.png|250]]
 
 - *on the first pass through the loop, Blt R1,L1 will be updated as taken in the BHT → and will be repeatedly taken for iterations of L1*
 - *on L1 exit, when the loop falls through, the branch will not be taken (and mispredicted as taken), & the BHT entry will be updated to not taken*
@@ -195,13 +205,15 @@
 
 → ***2-bit scheme where change prediction only if get misprediction twice***
 
-![[Pasted image 20231026204501.png|500]]
+<br>
 
 - ***2-bits → encoding a number 0-3 (4 states)***
 - *when we encounter a **not taken branch → decrement the counter***
 - *when we encounter a **taken branch → increment the counter***
 - ***state 0,1 → predict taken***
 - ***state 2,3 → predict not taken***
+
+<br>
 
 ***loops:***
 - *→ fixes the loop case for a 1-bit BHT*
@@ -211,8 +223,6 @@
 
 ***2-bit Branch History Table***
 
-![[Pasted image 20231026205027.png|400]]
-
 - *when we encounter a branch → **update the state in the BHT for that branch index***
 - ***incrementing if taken & decrementing if not taken***
 
@@ -220,15 +230,15 @@
 
 ***BHT Benchmarks***
 
-→ ***does increasing the number of BHT bits improve performance?
+→ ***does increasing the number of BHT bits improve performance?***
 
 - *2-bit predictor → often very good - sometimes awful*
 - *1-bit usually worse*
 - *3-bit not usefully better*
 
-**→ *does making the BHT capacity greater improve performance?**
+<br>
 
-![[Pasted image 20231026205207.png|400]]
+**→ *does making the BHT capacity greater improve performance?***
 
 - ***increasing the BHT capacity → more entries in the BHT table → prevents aliasing***
 - *any program with many branches should benefit from increased BHT capacity*
@@ -238,10 +248,10 @@
 
 ***Saturating Counter***
 
-![[Pasted image 20231026205900.png|400]]
-
 - ***n-bit BHT predictor essentially based on a n-bit saturating (no wraparound) counter → taken increments, not-taken decrements***
 - *predict taken if most significant bit is set*
+
+<br>
 
 ***bimodal:***
 - *most branches are highly biased → either almost always taken - or almost always not taken*
@@ -255,8 +265,6 @@
 ***Bias***
 
 - ***bimodal distribution***
-
-![[Pasted image 20231026210137.png|500]]
 
 - *most branches are untaken < 1% of the time or > 99% of the time*
 - → ***exploited by saturating counter***
@@ -306,18 +314,22 @@ endif
 - ***use global history to select from a number of branch history tables***
 - *→ according to the behaviour of the last m branches (exploits correlation between branches)*
 
-![[Pasted image 20231026212123.png|500]]
+<br>
 
 ***several BHTs:***
-- *several BHTs **indexed by the same PC k low-order bits**
+- *several BHTs **indexed by the same PC k low-order bits***
 - ***BHT selected using the Branch History Register***
 - *Branch History Register → contains the global history*
+
+<br>
 
 ***updating entries:***
 - *when a branch instruction has been completed → you know **whether the branch was taken/not taken & the branch history***
 - *use the **branch history to select which table to use***
 - *& **use the PC of that branch to select which entry to use***
 - ***update that entry with the takenness of the new branch***
+
+<br>
 
 - *different histories lead to the updation of different BHTs for that branch’s PC index*
 - *→ e**ach distinct m-bit branch history (in this case 2-bit) updates a different BHT (in this case 4)***
@@ -336,7 +348,7 @@ endif
 
 ***branch prediction accuracy vs number of global bits used for indexing:***
 
-![[Pasted image 20231026225747.png|500]]
+<br>
 
 - *code assumed to contain lots of correlated branches*
 - *& for a 4k entry branch predictor*
@@ -360,8 +372,6 @@ endif
 
 ***Re-evaluating Correlation***
 
-![[Pasted image 20231026231909.png|400]]
-
 - *several of the SPEC benchmarks have less than a dozen branches responsible for 90% of taken branches*
 - *→ may not represent real programs + OS (more like gcc & much larger) → more sensitive to branch predictor capacity*
 - *→ perhaps real program benefit less from global history*
@@ -380,22 +390,6 @@ endif
 - *combined with a **selector** (which is driven by a predictor to predict the correct predictor to use)
 - *→ hopes to select the right predictor for the right branch*
 
-![[Pasted image 20231026231857.png|400]]
-
-- - - 
-
-***Accuracy of Branch Prediction***
-
-![[Pasted image 20231026231948.png|500]]
-
-- - - 
-
-***Accuracy vs Size***
-
-![[Pasted image 20231026232004.png|500]]
-
-- ***Tournament** is not just a better predictor → **delivers a better prediction with fewer transistors***
-
 - - - 
 
 ***Summary - Branch Direction Prediction***
@@ -410,7 +404,7 @@ endif
 ***Takenness:***
 - → ***BHT:*** *2-bits for Loop Accuracy*
 - ***→ saturating counter (bimodal) scheme** → handles highly-biased branches well***
-- → ***correlating BHTs (global history) →** assumes recently executed branches correlated with next branch
+- → ***correlating BHTs (global history) →** assumes recently executed branches correlated with next branch*
 - → ***tournament predictor →** tries two or more competitive solutions & pick between them*
 
 - - - 
