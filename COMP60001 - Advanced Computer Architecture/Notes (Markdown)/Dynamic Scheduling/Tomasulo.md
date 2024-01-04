@@ -142,12 +142,12 @@
 
 - - - 
 
-- *common data bus: dynamically managed to forward the result from functional units that produce it to functional units that depend on it - without going through registers
+- ***common data bus**: dynamically managed to forward the result from functional units that produce it to functional units that depend on it - without going through registers
 
- - *registers have tags overwritten with the functional unit they depend on - so even if an instruction execution finishes after the value has been overwritten, that value will just be ignored by the register monitoring the data bus*
+ - ***registers have tags overwritten with the functional unit they depend on** - so even if an instruction execution finishes after the value has been overwritten, that value will just be ignored by the register monitoring the data bus*
 
-- *register is more of a tag that connects dependencies - rather than storing a value*
-- *at issue time, we are dynamically decoding the dependency structure of the program & arranging the forwarding wiring based upon this* 
+- ***register is more of a tag that connects dependencies** - rather than storing a value*
+- *at issue time, we are **dynamically decoding the dependency structure of the program** & arranging the forwarding wiring based upon this* 
 
 ****
 
@@ -155,14 +155,17 @@
 
 - *Tomasulo solves the issues faced with read-after-write (RAW), write-after-read (WAR), & write-after-write (WAW) hazards*
 
+***RAW:***
 - *for read-after-write (RAW), the first write instruction at issue time will put the value of the functional unit it is using into the tag field of the destination register it is writing to*
 - *the read instruction will then copy the tag of that register it is reading from, given the value is invalid, which will be the functional unit producing the value from the write instruction → then putting that tag as the source operand of the reservation station it is using*
 - *so once the write instruction has executed, it will pass the value to the reservation station of the read instruction directly - removing the read-after-write error*
 
+***WAR:***
 - *for write-after-read (WAR), the read instruction will either copy the value from the register to its operand if valid, or copy the tag of the register if invalid*
 - *the write instruction, will then update the tag of the destination register that it is writing to (and the other instruction is reading from)*
 - *as the read instruction has the value itself, or the tag of the functional unit it is dependent on in its reservation station, it does not matter if the write executes before the value is fully read, the value was already in its reservation station before the issue time of the write instruction*
 
+***WAW:***
 - *for write-after-write (WAW), the first write instruction at issue time will put the value of the functional unit it is using into the tag field of the destination register it is writing to*
 - *the second write instruction (writing to the same destination register) will put the value of the functional unit it is using into the tag field of the same destination register (overwriting the value put by the first write instruction)*
 - *this way → any following instructions reading the value from that register will get the tag of the functional unit of the second write instruction*
@@ -190,36 +193,36 @@
 
 ***Register Renaming***
 
-*register renaming → used to eliminate the false data dependencies that arise due to the reuse of architectural registers by successive instructions*
+***register renaming → used to eliminate the false data dependencies that arise due to the reuse of architectural registers by successive instructions***
 
 - *by eliminating these dependencies, the processor can execute more instructions in parallel (bypassing stalls) & improving instruction-level parallelism*
 
-- *Tomasulo’s Algorithm uses register renaming by effectively renaming the destination register of an instruction to the reservation station used by that instruction*
+- *Tomasulo’s Algorithm uses register renaming by effectively **renaming the destination register of an instruction to the reservation station used by that instruction***
 
 - - - 
 
 ***Tomasulo Drawbacks:*
 
-- *Complexity*
-- *many associate stores at high speed - multiple comparators monitoring bus in parallel*
+- ***Complexity***
+- *many associated stores at high speed - multiple comparators monitoring bus in parallel*
 
-- *Performance Limited by Common Data Bus*
+- ***Performance Limited by Common Data Bus***
 - *each common data bus must go to multiple functional units, high capacitance, high wiring density*
 - *number of functional units that can complete per cycle limited to one*
 - *two functional units may complete at same time - then need multiple common data buses, more functional unit logic etc.*
 
-- *no precise interrupts*
+- ***no precise interrupts***
 
 - - - 
 
 ***Why can Tomasulo Overlap Iterations of Loops?*
 
-*iterate whole loop iterations in parallel with each other*
+→ ***iterate whole loop iterations in parallel with each other***
 
 - *would have same instructions running in parallel referring to same registers*
 - *need register renaming (as Tomasulo allows with Reservation Stations)*
 
-- *Register Renaming: multiple iterations use different physical destinations for registers (dynamic loop unrolling)*
+- ***Register Renaming: multiple iterations use different physical destinations for registers (dynamic loop unrolling)***
 
 - *Reservation Stations: permit instruction issue to advance past integer control flow operations, & buffer old values of registers (avoiding WAR stall)*
 
@@ -246,16 +249,14 @@
 
 ***Summary:*
 
-- *Tomasulo overcomes WAR and WAW hazards by dynamically allocating operands to reservation stations at issue time (decoupling operands from register files) - register files can be reused while reservation stations provide pathway for those instructions to complete correctly*
+- *Tomasulo overcomes WAR and WAW hazards by **dynamically allocating operands to reservation stations at issue time** (decoupling operands from register files) - register files can be reused while reservation stations provide pathway for those instructions to complete correctly*
 
 - *Tomasulo’s CDB is a kind of forwarding path - that routes operands from completing FUs to where they are needed*
 
-- *Tomasulo’s Scheme relies on associative tag matching (comparator needed at every register & every reservation station)*
+- *Tomasulo’s Scheme relies on **associative tag matching** (comparator needed at every register & every reservation station)*
 
-- *Tomasulo’s Scheme enables multiple FUs to operate in parallel (even across loop iterations) - allows to dynamically adapt to unexpected execution orders (such as cache misses)*
+- *Tomasulo’s Scheme **enables multiple FUs to operate in parallel** (even across loop iterations) - allows to dynamically adapt to unexpected execution orders (such as cache misses)*
 
 - - -
-
-
 
 
