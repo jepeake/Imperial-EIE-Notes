@@ -15,7 +15,7 @@
 
 - *→ **the speedup of the latency of the execution** of a program as a function of the number of processors executing it is **limited by the serial part of the program***
 
-- *example: if a program needs 20hours to execute using a single thread - but a one-hour portion cannot be parallelised
+- *example: if a program needs 20hours to execute using a single thread - but a one-hour portion cannot be parallelised*
 - *only the remaining 19hours (p = 0.95) of the program can be parallelised*
 - *so - regardless of how many threads/cores are devoted to a parallelised execution of the program - the minimum execution time is always more than 1 hour*
 - *so the theoretical speedup is less that 20x single-thread performance*
