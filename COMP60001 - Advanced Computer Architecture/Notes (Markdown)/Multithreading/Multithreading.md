@@ -7,8 +7,6 @@
 
 ***Multithreading***
 
-![[Pasted image 20231122115253.png]]
-
 ***Instruction Issue:***
 - *sequential machine*
 - *can execute a single instruction per cycle*
@@ -25,17 +23,17 @@
 
 ***Chip Multiprocessor:***
 - *multiple processor cores on a chip*
-- → *execute two threads in parallel on separate cores
+- → *execute two threads in parallel on separate cores*
 - → *limited utilisation when only one of threads is running*
 
 ***Fine Grained Multithreading (FGMT):***
 - ***different threads in different cycles*
-- *multiplex multiple threads in parallel on a single core
+- *multiplex multiple threads in parallel on a single core*
 - → *threads fetched in round-robin fashion*
 - → *fetch up to 4 instructions per cycle*
 - → *filling pipeline stalls*
 - → *intra-thread dependencies still limit performance*
-- → *if at a given time there is only one thread to run → must wait for that thread to be fetched *
+- → *if at a given time there is only one thread to run → must wait for that thread to be fetched*
 
 ***Simultaneous Multithreading (SMT):***
 - ***dynamic scheduling of operations from a pool of threads*
@@ -51,10 +49,8 @@
 
 ***basic out-of-order pipeline:***
 *(dynamically scheduled processor)*
-![[Pasted image 20231122121331.png|550]]
 
 ***SMT pipeline:***
-![[Pasted image 20231122121358.png|550]]
 - *same as out of order pipeline + dynamic scheduling of instruction fetches of 4 PCs in parallel*
 - → *instruction cache contains allocations from different threads*
 - → *issue-side register alias tables (register maps) needed for each thread (containing software-visible registers for that thread)*
@@ -62,7 +58,7 @@
 - → *allocates physical registers dynamically to each threads registers from a common pool*
 - → *dynamically executes independent of specific-thread*
 - → *allocates into data cache independent of specific-thread*
-- *→ writes to registers & retires independent of specific-thread
+- *→ writes to registers & retires independent of specific-thread*
 
 ***protection issue:***
 - *→ must ensure different threads operating in different protection domains (i.e. different users) can only access their particular memory*
@@ -79,11 +75,9 @@
 ***SMT Performance***
 
 ***alpha:***
-![[Pasted image 20231122180444.png|500]]
 - → *factor of 2 in performance (with 4 simultaneous threads)*
 
 ***pentium 4:***
-![[Pasted image 20231122180718.png|400]]
 - → *hyperthreading (running two parallel threads on a single core) gives little performance improvement*
 - → *simultaneous multithreading gives significant performance improvement*
 
@@ -95,7 +89,6 @@
 → *in-order*
 → *2-way SMT*
 → *2 instructions per cycle (from same or different threads)*
-![[Pasted image 20231122181021.png|400]]
 
 ***important consideration:***
 → *what is cost of SMT?*
@@ -120,7 +113,7 @@
 - *→ side channel issues*
 
 - ***threads may be scheduled unfairly*
-- → *one thread may monopolise the whole CPU & block progress of other threads
+- → *one thread may monopolise the whole CPU & block progress of other threads*
 - → *e.g. slow thread that suffers many cache misses & fills RUU - blocking issue of other threads*
 
 - ***side-channels*
@@ -154,7 +147,6 @@
 
 → *mapping threads into the register file*
 → *logical-to-physical register mapping*
-![[Pasted image 20231122185208.png|400]]
 - *if each thread needs few registers (lightweight) - lots of threads can coexist in the same physical register file*
 - - → *more threads = higher occupancy & better latency hiding*
 - *alternatively - fewer heavyweight threads*

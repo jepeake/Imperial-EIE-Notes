@@ -18,8 +18,6 @@
 
 ***Exfiltration***
 
-![[Pasted image 20231115181658.png|300]]
-
 - *suppose we control thread A (running on core 1)*
 - *thread B is encrypting a message using a secret key - executing code on core 2 that we know but do not control*
 
@@ -67,8 +65,6 @@ for(i=0;i<N;++i){
 - → *once the victim has executed, the attacker then reloads the evicted line by touching it, measuring the time taken*
 - → *a fast reload indicates that the victim touched this line (cache hit → victim already reloaded it), while a slow reload indicates that it didn’t (cache miss → victim did not reload into cache)*
 
-![[Pasted image 20231115183743.png|300]]
-
 → *can observe the accesses taken by a piece of victim code*
 
 - - - 
@@ -79,10 +75,8 @@ for(i=0;i<N;++i){
 - *if they share a single core → L1I, L1D, L2, TLB, branch predictor, physical rename registers, dispatch ports…*
 - *separate cores → may share caches, interconnect…*
 
-![[Pasted image 20231115184013.png|400]]
-
 - *different packages (chips) → may share L3 Cache*
-- *Memory Controllers may be shared
+- *Memory Controllers may be shared*
 - *Interconnects → may be shared across whole system*
 
 - → *for side-channel attacks to work → must be some shared state between threads that are running (point of contention)*
@@ -105,8 +99,6 @@ for(i=0;i<N;++i){
 
 ***Language-Based Security: Bounds Checking***
 
-![[Pasted image 20231115185624.png|500]]
-
 - *if there is an array in the program → compiler implements such that subscript i is first checked to be within the bound of the array, before computing the address & accessing the array*
 - → *such that an out of bounds index cannot access the array*
 
@@ -116,17 +108,15 @@ for(i=0;i<N;++i){
 
 → *side channel attacks can exploit the side effects of speculative execution (even if the execution is later undone as the condition is unmet)*
 
-![[Pasted image 20231115185930.png|200]]
-
 - *in a speculatively executed machine, suppose that the bounds check is predicted satisfied*
 - *such that the subsequent code is speculatively executed*
 - *but i is out of bounds*
 
-- *so *p points to a victim web page’s secret s (e.g. data on page B above)*
+- *so p points to a victim web page’s secret s (e.g. data on page B above)*
 - *can speculatively use s as an index into an array that we do have access to (B → canary array)*
 - *& then use timing to determine whether the cache line on which B[s] falls has been allocated as a side-effect of speculative execution (flushing & reloading B - if B reloads quickly → cache line has been allocated as a side-effect of speculative execution)*
 - *determines which allocation took place from B & therefore can infer the secret s (that was used to index B)*
-- → *can do all this before the speculative execution is undone (if statement evaluates to not satisfied)
+- → *can do all this before the speculative execution is undone (if statement evaluates to not satisfied)*
 
 - → *need to make sure branch predictor predicts will be in bounds (running code a few times where in bounds is satisfied) & then making branch predictor mispredict on an out of bounds index*
 
@@ -139,29 +129,17 @@ for(i=0;i<N;++i){
 - *declare an array1 to be accessed out of bounds (during speculative execution)*
 - *declare a canary array (array2) whose cached-ness can be probed to determine which allocation took place (previously array B) & therefore determine the secret*
 
-![[Pasted image 20231115195406.png|500]]
-
-- *execute a victim function that includes a bound-checking conditional & accesses the canary array using data from array 1
+- *execute a victim function that includes a bound-checking conditional & accesses the canary array using data from array 1*
 - *if this function is indexed out of bounds (speculatively executing the if statement) → canary array is indexed using data that is out of bounds (outside of array 1)*
-
-![[Pasted image 20231115195429.png|500]]
-
-![[Pasted image 20231115195812.png|500]]
 
 - *if x is out of bounds & carefully chosen to be the index which leads to the first character of the secret (address of secret - address of array 1)*
 - *array2 is accessed using the first character of the secret * 512 → hitting a specific cache line*
-- *can detect which cache line hit → from which we can determine the secret
+- *can detect which cache line hit → from which we can determine the secret*
 
-![[Pasted image 20231115195828.png|500]]
-
-- *flush array 2 from the cache to prepare for reloading & timing accesses, to determine which cache lines (in array2) hit → inferring the secret data (looking at the address of array 2 which is a hit & working backwards to determine the secret value that must have been used to access that element in array2)
+- *flush array 2 from the cache to prepare for reloading & timing accesses, to determine which cache lines (in array2) hit → inferring the secret data (looking at the address of array 2 which is a hit & working backwards to determine the secret value that must have been used to access that element in array2)*
 - *train the branch predictor to speculatively predict the if statement as true - & then when an out of bounds index is then passed to it (mispredicts)*
 
-![[Pasted image 20231115195840.png|500]]
-
 - *reload the cache & time accesses (fast access → corresponds to secret data)*
-
-![[Pasted image 20231115195852.png|500]]
 
 - → *statistical analysis to find outlier access times (find fast accesses & corresponding secret data)*
 

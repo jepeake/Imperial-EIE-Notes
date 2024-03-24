@@ -5,7 +5,7 @@
 
 - - - 
 
-*Dynamic Scheduling, Out-of-Order Execution, Register Renaming **with Speculative Execution**
+*Dynamic Scheduling, Out-of-Order Execution, Register Renaming **with Speculative Execution***
 
 - - - 
 
@@ -25,14 +25,12 @@
 - *if we speculate that a branch is not taken, executing instructions, & then the branch is taken (misprediction)*
 - *we do not have a consistent program state to return to in Tomasulo (to undo the speculatively executed instructions)*
 
-- ***solution: add a commit stage*
+- ***solution: add a commit stage***
 - *commits the state in issue order*
 
 - - - - 
 
 ***Four Steps of the Speculative Tomasulo Algorithm***
-
-![[Pasted image 20231018195624.png|500]]
 
 - *added a commit stage*
 - *maintains a reorder buffer structure*
@@ -45,17 +43,9 @@
 
 - *ROBs introduced to manage the results of out-of-order executed instructions to ensure in-order commit of instructions*
 
-*previously, without Reorder Buffer:*
-
-![[Pasted image 20231018195900.png|500]]
-
-*with Reorder Buffer:*
-
-![[Pasted image 20231018195912.png|500]]
 
 - *added Reorder Buffer, Commit Unit, & Commit-side Registers*
 
-![[Pasted image 20231018195954.png|500]]
 
 - ***Reorder Buffer: a queue/circular buffer/FIFO***
 - *when an instruction is issued → also allocated a reorder buffer entry (pushed onto queue)*
@@ -88,7 +78,7 @@
 - *values for F0 are overwritten in the issue-side registers, but ROB maintains the different values of F0 → before they are committed*
 
 ***Commit:***
-- *commit unit processes ROB entries in issue order 
+- *commit unit processes ROB entries in issue order*
 - *each instruction waits in turn and commits when its operands are completed (instruction are committed when they are at the head of the queue & have completed)*
 - *committed registers updated with values from ROB*
 - *commit-side F0 is updated first with result from MUL1 & then result from MUL2*
@@ -100,8 +90,6 @@
 *now have two sets of registers:*
 - ***issue-side registers***
 - ***commit-side registers***
-
-![[Pasted image 20231018202142.png|500]]
 
 *issue-side registers: update speculatively*
 
@@ -116,17 +104,15 @@
 *→ add a conditional branch instruction to the issued instructions*
 - *predict the conditional branch as not taken → fall through to instructions 4 & 5*
 
-![[Pasted image 20231025201109.png|500]]
-
 - *as we progressively issue the instructions, we fill up the reorder buffer with the instructions*
 
 - *assume we predicted the branch as not taken*
 
 ***branch misprediction:***
-- *when the branch (predicted not taken) reaches the head of the commit queue → could be a **misprediction** (branch was actually taken)
+- *when the branch (predicted not taken) reaches the head of the commit queue → could be a **misprediction** (branch was actually taken)*
 - *→ all issued but not committed instructions (after the branch) are erroneous*
-- *→ trash all of the ROB entries
-- *→ use commit-side registers to reset values of issue-side registers (F0, F1, F2, F3) → reinstating the register state at conditional branch point
+- *→ trash all of the ROB entries*
+- *→ use commit-side registers to reset values of issue-side registers (F0, F1, F2, F3) → reinstating the register state at conditional branch point*
 - *→ correct branch target instructions are fetched & issued (refilling the machine & restarting execution)*
 
 - *assuming functional units are not stopped*
@@ -147,8 +133,6 @@
 ***What if a Second Conditional Branch is encountered, before the outcome of the first is resolved?***
 
 - *→ can speculate on the outcome of both branches*
-
-![[Pasted image 20231025204230.png|500]]
 
 - *assume predict first branch to be not taken*
 - *when it reaches head of the commit queue, branch should be taken → misprediction*
@@ -174,8 +158,6 @@
 - *if none of the store addresses match the load → load can proceed*
 - *if the address of the load matches the address of an uncommitted store → forward the store’s data to the load*
 
-![[Pasted image 20231025205802.png|500]]
-
 - *add load unit & store buffer*
 - *store buffer collects the uncommitted store instructions*
 - *when a load instruction → waits in the load unit until its address & all preceding store addresses are known*
@@ -194,7 +176,6 @@
 - *which may or may not be known at issue time*
 
 *consider:*
-![[Pasted image 20231025214154.png|400]]
 
 - *stores F0 into memory at address R3*
 - *loads an address from memory into R2*
@@ -226,8 +207,6 @@
 - *Realisation in Pentium III & Pentium 4*
 
 ***simplescalar simulator:***
-
-![[Pasted image 20231025231827.png|500]]
 
 - *simplescalar: simulation software of a processor microarchitecture*
 - *simulates a multi-issue out-of-order design with speculative execution*
@@ -278,8 +257,6 @@
 
 ***Register Update Unit (RUU)***
 
-![[Pasted image 20231025233204.png|600]]
-
 - *state from commit-side registers can be transferred in parallel to issue-side registers (i.e. on a branch misprediction) to keep a consistent state*
 
 - *instructions are issued into RRU (which unifies ROB & Reservation Stations)*
@@ -294,7 +271,7 @@
 - *in Tomasulo, tags belong to the Reservation Stations/Functional Units executing that instruction*
 - *with RUU → tags are RUU indexes*
 - *RUU being managed as a circular buffer (like ROB) & tag used as index to that buffer*
-- *when an instruction is dispatched → also include tag
+- *when an instruction is dispatched → also include tag*
 - *when the instruction completes & is broadcast to the common data bus → tag used to update issue-side registers & used to index the RUU to update the ROB entry for the instruction in question*
 
 - *commit unit waits for the instruction at the head of the RUU queue to be completed & commits it to the commit-side registers*
@@ -309,7 +286,7 @@
 ***RUU vs ROB***
 
 - *in Tomasulo + ROB → registers & ROB entries have a tag*
-- *every register, ROB entry, & reservation station needs a comparator to monitor the CDB
+- *every register, ROB entry, & reservation station needs a comparator to monitor the CDB*
 
 - *with RUU → the tags are the ROB entry numbers*
 - *so the ROB is indexed by the tag on the CDB (ROB thought of as a set of registers)*
@@ -320,8 +297,6 @@
 - - - 
 
 ***Pentium III & Pentium 4 (NetBurst)***
-
-![[Pasted image 20231025235018.png|550]]
 
 *Pentium III:*
 - *to avoid copying register contents around → rather than storing register values in issue-side registers → RAT*
@@ -348,20 +323,16 @@
 
 ***Pentium 4 NetBurst Microarchitecture***
 
-![[Pasted image 20231026000735.png|550]]
-
 - *instructions (which vary in length) are fetched & then decoded into microops*
 - *simple instructions can be translated into one microop*
 - *more complicated instructions may take more microops*
 - *trace cache (instruction cache) caches the decoded microops & tries to cache predicted taken chains of microops*
-- *trach cache BTB (branch predictor) tries to predict which elements of the trace cache will be the branch target*
+- *trace cache BTB (branch predictor) tries to predict which elements of the trace cache will be the branch target*
 - *when an instruction is issued → dynamically allocated register from RF*
 - *→ dispatch to memory side of machine or integer/FP queue*
 - *instructions then dispatched (bypassed) to available functional units*
 
 - - - 
-
-![[Pasted image 20231026164010.png|500]]
 
 - *Pentium 4 runs at very high clock rate & has many pipeline stages*
 - *Pentium III has slower clock rate & less pipeline stages (does more in each pipeline stage)*
@@ -374,9 +345,6 @@
 
 ***Multiple Instructions per Clock Cycle***
 
-
-![[Pasted image 20231026164309.png|500]]
-
 - *without optimisation → compiler is not using registers*
 - *all operations happening with pointers to memory*
 - *→ speculative execution techniques will not work*
@@ -385,7 +353,6 @@
 *with optimisation:*
 - *register allocation*
 
-![[Pasted image 20231026164729.png|500]]
 
 - *four instructions in the loop & only references registers*
 - *1.02 clock cycles per loop iteration (4 instructions executed in parallel per cycle)*

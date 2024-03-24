@@ -42,7 +42,7 @@
 - → *packaged in pairs (TPCs)*
 
 ***memory:***
-- → *high-speed interconnection network connecting processors to an array of memory interfaces
+- → *high-speed interconnection network connecting processors to an array of memory interfaces*
 - → *offchip DRAM*
 - → *L2 Cache*
 - → *Raster Operation Processor (ROP)*
@@ -56,7 +56,7 @@
 - → *two SMs share some resources in a TPC*
 
 ***SP:***
-- *→ streaming processor
+- *→ streaming processor*
 - → *8 per SM*
 - → *execute 32-wide vector instructions*
 
@@ -231,7 +231,7 @@
 ***SM:***
 - → *SM has a **SIMT multithreaded instruction unit** that creates, manages, schedules, & executes threads in groups of warps*
 - → *each SM **manages a pool of warps***
-- → *individual **threads** composing a SIMT warp **start together at the same program address (free to branch & execute independently)**
+- → *individual **threads** composing a SIMT warp **start together at the same program address (free to branch & execute independently)***
 - → *at instruction issue time - select ready-to-run warp & issue next instruction to that warp’s active threads*
 
 

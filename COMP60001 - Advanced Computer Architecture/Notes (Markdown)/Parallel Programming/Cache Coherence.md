@@ -7,7 +7,7 @@
 
 ***Parallel Programming Overview***
 
-→ *power considerations & multicore***
+→ ***power considerations & multicore***
 
 → *shared-memory parallel programming*
 	→ *dynamic load-balancing*
@@ -16,7 +16,7 @@
 → ***cache coherency***
 	*→ **design space of snooping protocols based on broadcasting invalidations & requests***
 
-→ *atomic operations & locks***
+→ ***atomic operations & locks***
 
 → *sequential consistency*
 
@@ -31,8 +31,6 @@
 - → *suppose processor 0 stores to memory location X & processor 0’s cached copy of X is updates*
 - → ***processor 1 continues to use old value of X***
 - → *suppose processor 2 loads memory location X → **does not not whether to get X from main memory or processor 0 or processor 1***
-
-![[Pasted image 20231203194944.png|600]]
 
 ***issues:***
 - → *how to find the latest version of the cache line?*
@@ -110,8 +108,6 @@
 
 → ***all snooping cache controllers monitor (snoop on) all bus transactions to determine whether they have a copy of a block of data that is being read or written by another processor (by checking tags against tags of its cache)***
 
-![[Pasted image 20231203213430.png|600]]
-
 ***features:***
 - ***shared bus architecture** → snooping protocols used in systems where all processors are connected to a common bus (used for both data transfers & coherence communication)*
 - ***broadcast-based** → whenever a processor issues a memory operation - this operations is broadcasted on the shared bus*
@@ -132,7 +128,7 @@
 
 ***uses:***
 - → *small to medium sized multicore systems*
-- →. *systems where latency of coherence actions critical*
+- → *systems where latency of coherence actions critical*
 - → *systems that can tolerate bus bandwidth limitations imposed by the snooping mechanism*
 
 - - - 
@@ -195,8 +191,6 @@
 
 ***Berkley Protocol - State Transitions***
 
-![[Pasted image 20231203222844.png|600]]
-
 - - - 
 
 ***Snooping Cache Controller in Berkley Protocol***
@@ -216,8 +210,6 @@
 - - - 
 
 ***Design Space of Snooping Cache Protocols***
-
-![[Pasted image 20231203225020.png|600]]
 
 - - -
 

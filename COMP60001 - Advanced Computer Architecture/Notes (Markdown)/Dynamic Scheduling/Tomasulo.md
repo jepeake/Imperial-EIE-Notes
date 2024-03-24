@@ -5,11 +5,11 @@
 
 - - - 
 
-***Dynamic Scheduling, Out-of-Order Execution, Register Renaming
+***Dynamic Scheduling, Out-of-Order Execution, Register Renaming***
 
 - - - 
 
-***Instruction Parallelism:*
+***Instruction Parallelism:***
 
 ***Bypassing Stalls:*** *instructions behind a stall can be allowed to continue provided data dependence/hazards allow*
 
@@ -17,7 +17,6 @@
 - *instructions are issues in order, have dependencies analysed, and can then be executed out-of-order*
 - *when operands are available, allow execution of the stalled instructions to continue*
 
-![[Pasted image 20230819125651.png]]
 
 - *add instruction depends on the divide instruction - subtract instruction does not depend of either of them - want subtract instruction to proceed while add instruction waits for execution of divide instruction*
 
@@ -38,8 +37,6 @@
 
 ***True Dependence/RAW:***
 
-![[Pasted image 20230819130547.png|300]]
-
 - *instruction J is data dependent on instruction I*
 - *J tries to read operand before I writes it*
 - *or J is data dependent on instruction K which is data dependent on instruction I*
@@ -49,7 +46,7 @@
 
 - - - 
 
-***Name Dependencies:*
+***Name Dependencies:***
 
 ***Name Dependence:*** *when two instructions use the same register or memory location, called a name, but no flow of data between the instructions associated with that name*
 
@@ -57,7 +54,6 @@
 
 ***Anti-Dependence/WAR:***
 
-![[Pasted image 20230819131021.png]]
 
 - *instruction J writes operand before instruction I reads it (overwriting)*
 - *here: I will read the incorrect value of r1 as has been overwritten*
@@ -69,7 +65,6 @@
 
 ***Output Dependence/WAW:***
 
-![[Pasted image 20230819132406.png]]
 
 - *instruction J writes operand before instruction I writes it*
 - *here: mul depends on r1, but will get the value of r1 from I rather than J*
@@ -79,13 +74,7 @@
 
 - - - 
 
-![[Pasted image 20230820003650.png]]
-
-- - - 
-
 ***Dynamic Scheduling:***
-
-![[Pasted image 20230819132929.png]]
 
 - *rename decode stage to issue*
 - ***issue:*** *decode instructions, check for structural hazards (is there a functional unit available, is there a shelf can put instruction on if necessary)*
@@ -103,7 +92,6 @@
 
 - *decouples the dispatch of instructions from the availability of their operands → allowing out-of-order execution*
 
-![[Pasted image 20230819223127.png]]
 
 - ***Issue**: collects operands from instructions source registers, consults registers, & allocates instruction to a reservation station (shelf)*
 
@@ -112,7 +100,7 @@
 - *May have to wait for operands to be computed*
 
 - *registers can hold a value + a tag*
-- ***Tag**: if tag NULL, value is valid (no instruction currently in execution in machine producing a value for that register
+- ***Tag**: if tag NULL, value is valid (no instruction currently in execution in machine producing a value for that register*
 - *if there is an instruction in execution that produces a value for that register, tag value will be the id of the function unit that will produce the value for that register*
 
 - - - 
@@ -125,13 +113,12 @@
 - *the destination register will have it’s tag updated with the id of the allocated functional unit - where the result is going to come from*
 - *when another instruction has the same destination register - it will overwrite the tag at issue time
 
-![[Pasted image 20230819224500.png]]
 
 - *at issue time, if the value of the source register is not valid (tag is not NULL), the tag is copied to the operand of the allocated functional unit*
 - *i.e. - if that source register is depending on instructions that are currently in flight, the functional unit that it is dependent on will be copied to the operand rather than the value itself (as this is the value that has been put in the tag field)*
 
 - *when an instruction finishes - the common data bus connects all of the functional unit to all of the registers, and all of the reservation stations*
-- *the registers monitor the common data bus, if the registers current value is not valid, the tag indicates which functional unit is going to produce its result, so the register can monitor for any values that carry that tag 
+- *the registers monitor the common data bus, if the registers current value is not valid, the tag indicates which functional unit is going to produce its result, so the register can monitor for any values that carry that tag*
 - *when a functional unit finishes executing, it broadcasts onto the common data bus with a tag saying that this result is from that functional unit*
 - *so the register that depends on that value can wait until it sees that tag, and pick the value up*
 - *updating the destination register with the executed value*
@@ -142,7 +129,7 @@
 
 - - - 
 
-- ***common data bus**: dynamically managed to forward the result from functional units that produce it to functional units that depend on it - without going through registers
+- ***common data bus**: dynamically managed to forward the result from functional units that produce it to functional units that depend on it - without going through registers*
 
  - ***registers have tags overwritten with the functional unit they depend on** - so even if an instruction execution finishes after the value has been overwritten, that value will just be ignored by the register monitoring the data bus*
 
@@ -173,7 +160,7 @@
 
 - - - 
 
-***Stages of Tomasulo Algorithm:*
+***Stages of Tomasulo Algorithm:***
 
 - ***Issue:*** *get instruction from FP Op Queue*
 - *if reservation station free (no structural hazard), control issues instruction & sends operands (renames registers → by effectively renaming the destination register to the reservation stations)*
@@ -201,7 +188,7 @@
 
 - - - 
 
-***Tomasulo Drawbacks:*
+***Tomasulo Drawbacks:***
 
 - ***Complexity***
 - *many associated stores at high speed - multiple comparators monitoring bus in parallel*
@@ -215,7 +202,7 @@
 
 - - - 
 
-***Why can Tomasulo Overlap Iterations of Loops?*
+***Why can Tomasulo Overlap Iterations of Loops?***
 
 → ***iterate whole loop iterations in parallel with each other***
 
@@ -228,26 +215,7 @@
 
 - - - 
 
-***Tomasulo Example:***
-
-*assuming floating-point multiply takes 4 clocks*
-*load takes 8 clocks (assuming L1 cache miss)*
-
-![[Pasted image 20230820000145.png]]
-
-- *Naturally overlapping - four iterations of loop running in parallel*
-
-*suppose second load is an L1 cache hit:*
-
-![[Pasted image 20230820000336.png]]
-
-- *Tomasulo scheme dynamically adapts schedule - whether we have cache hits or cache misses*
-- *assuming here an L2 cache hit*
-- *good for absorbing difference between L1 cache miss & L2 cache hit - but would be bad at L2 miss and accessing DRAM*
-
-- - - 
-
-***Summary:*
+***Summary:***
 
 - *Tomasulo overcomes WAR and WAW hazards by **dynamically allocating operands to reservation stations at issue time** (decoupling operands from register files) - register files can be reused while reservation stations provide pathway for those instructions to complete correctly*
 

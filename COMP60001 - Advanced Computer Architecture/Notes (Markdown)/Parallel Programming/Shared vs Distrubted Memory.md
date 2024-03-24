@@ -9,14 +9,14 @@
 
 → ***power considerations & multicore***
 
-→ ***shared-memory parallel programming*
+→ ***shared-memory parallel programming***
 	→ *dynamic load-balancing*
 	→ *distributed-memory parallel programming (why harder to program but more robust performance)*
 
 → *cache coherency*
 	*→ design space of snooping protocols based on broadcasting invalidations & requests*
 
-→ *atomic operations & locks***
+→ ***atomic operations & locks***
 
 → *sequential consistency*
 
@@ -24,12 +24,10 @@
 
 ***Microprocessor Trend***
 
-![[Pasted image 20231202224231.png|500]]
-
 - → *single thread performance non-longer increasing with Moore’s Law*
 - → *as clock frequency hit a maximum point (power & cooling requirements)*
 - → *power hit a maximum point*
-- → ***to exploit transistor count & increase performance (without increasing clock frequency) → increase number of cores*
+- → ***to exploit transistor count & increase performance (without increasing clock frequency) → increase number of cores***
 
 - - - 
 
@@ -55,21 +53,21 @@
 - → *much more efficient to use lots of parallel units at a low clock rate & low voltage (less energy per operation)*
 
 ***Solutions:***
-→ ***compute fast & then turn system off*
+→ ***compute fast & then turn system off***
 
-→ ***compute just fast enough to meet deadline*
+→ ***compute just fast enough to meet deadline***
 
-→ ***clock/power gating*
-- → *turn functional units/cores off when they are not being used
+→ ***clock/power gating***
+- → *turn functional units/cores off when they are not being used*
 
-→ ***dynamic voltage/clock regulation*
+→ ***dynamic voltage/clock regulation***
 - → *reduce clock rate dynamically*
 - → *reduce supply voltage dynamically*
 - → *such as when CPU is not a bottleneck (or battery is low)* 
 
-→ ***run on lots of cores - each at a low clock rate*
+→ ***run on lots of cores - each at a low clock rate***
 
-→ ***turbo mode*
+→ ***turbo mode***
 - → *boost clock rate only when one core is active*
 
 - - - 
@@ -77,8 +75,8 @@
 ***Programming a Parallel Computer***
 
 *two types of possible memory:*
-- → ***Shared Memory*
-- → ***Distributed Memory*
+- → ***Shared Memory***
+- → ***Distributed Memory***
 
 ***Shared Memory:***
 - → *allows **multiple processors to access the same memory space***
@@ -103,13 +101,10 @@
 ***Example - Parallel Programming***
 
 ***code:***
-![[Pasted image 20231202230334.png|300]]
 - → *first loop operates on rows in parallel*
 - → *second loop operates on columns in parallel*
 - → *with **distributed memory - would have to program message passing between to transpose the array***
 - → *with **shared memory - both loops can access the same memory & no message passing needed***
-
-![[Pasted image 20231202230604.png|200]]
 
 - - - 
 
@@ -128,11 +123,9 @@
 - ***Environment Variables*** → *control aspects like number of threads to use etc.*
 
 ***example:***
-![[Pasted image 20231202233554.png|300]]
 
 ***#pragma omp parallel for*** → *directive tells compiler that **next loop should be executed in parallel***
 
-![[Pasted image 20231203001044.png|300]]
 - ***default(shared) private(i)** → tells the compilers all variables except i are shared by all threads*
 - ***schedule(static,chunk)** → tells the compiler that iterations of the parallel loop should be distributed in equal sized blocks to each thread (chunk parameter specifies the size of each chunk of iterations) & these chunks of iterations are statically scheduled*
 - ***reduction(+:result)** → performs a reduction on the variables that appear in the argument list (combining values of private copies of result from all threads into a single value)*
@@ -152,8 +145,6 @@
 ***Implementing Shared-Memory Parallel Loop (OpenMP)***
 
 ***Serial Loop vs Shared-Memory Parallel Loop (OpenMP):***
-
-![[Pasted image 20231202233800.png|500]]
 
 ***Serial Loop:***
 - → *iterating over arrays A and B and computing there element wise sum into array C*
@@ -189,14 +180,12 @@
 - *→ lock/unlock mechanism used to ensure no two threads can modify i simultaneously (leading to race conditions)*
 - → ***using locks can be expensive as they cause significant overhead & can lead to contention (other threads waiting for the lock to be released)*
 
-![[Pasted image 20231202235004.png|200]]
-
 ***hardware-supported atomic operations:***
 - → *many modern processors have built-in support for atomic operations that are more efficient that lock-based approaches*
 
 ***combining operations:***
 - → *when scaling to large system even atomic operations can lead to contention as many threads may attempt to increment the same memory location simultaneously*
-- → *can **combine FetchAndAdd operations in the network layer**
+- → *can **combine FetchAndAdd operations in the network layer***
 - → *when two FetchAndAdd messages meet - combined into one FetchAndAdd that returns two values (single operation)*
 - → *requires support from network hardware connecting processors*
 
@@ -213,12 +202,11 @@
 → processes communicate & synchronised by sending & receiving messages*
 
 ***Features:***
-- ***point-to-point communication** → sending & receiving messages between pairs of processors (with functions like MPI_Send & MPI_Recv)
+- ***point-to-point communication** → sending & receiving messages between pairs of processors (with functions like MPI_Send & MPI_Recv)*
 - ***collective communication** → operations involving groups of processes, such as broadcasting a message to all processes or gathering messages from all processes*
 - ***synchronisation** → provides mechanisms for synchronising processes*
 
 ***operations:***
-![[Pasted image 20231203004548.png|550]]
 
 - → *uses **Single Program Multiple Data (SPMD)***
 
@@ -244,24 +232,16 @@
 → *each element is updated using a weighted sum of neighbour values*
 
 ***example:***
-![[Pasted image 20231203005124.png|400]]
 - → *nested loop that performs a stencil operation*
 - → *for each element in array B - computes the new value as the average of its four neighbours in array A*
 
 ***parallelisation:***
 - → *to parallelise stencil operation - **divide array among multiple processes & each process updates a portion of the array***
-- → ***each process needs data from neighbouring partitions** to compute values at the edge of the partition (dependence)
+- → ***each process needs data from neighbouring partitions** to compute values at the edge of the partition (dependence)*
 - → *MPI requires explicit communication between processes - whereas OpenMP can use shared memory*
-
-![[Pasted image 20231203190334.png|300]]
-![[Pasted image 20231203170247.png|300]]
-![[Pasted image 20231203190353.png|300]]
-![[Pasted image 20231203010534.png|300]]
-![[Pasted image 20231203010610.png|300]]
 
 ***using OpenMP (Shared Memory):***
 
-![[Pasted image 20231203005757.png|400]]
 - → *uses **directive** to **parallelise the execution of the nested loop***
 - → ***private** ensures each thread has its own instance of the loop*
 - → ***collapse** allows for the collapsing of two nested loops into a single parallel loop to increase granularity of work done by each thread*
@@ -277,8 +257,6 @@
 - → *multiple processors executing same program on different data (figuring out which part of task they need to perform)*
 
 ***Initialising Partitions of Array of Data:***
-![[Pasted image 20231203165921.png|200]]
-![[Pasted image 20231203165205.png|300]]
 
 - ***myrank →*** *a unique identifies of a processor in MPI*
 - ***comm →*** *MPI communicator - a group of processes that can communicate with each other using MPI*
@@ -286,7 +264,7 @@
 - ***MPI_COMM_RANK*** → *determines the rank of the calling process within the communicator (assigning unique identifier myrank to the calling process)*
 
 - → ***computes size of the local block** of data the each processor will handle (partition of the array)*
-- → *computes which other processors are **neighbouring**
+- → *computes which other processors are **neighbouring***
 - → ***allocates local arrays** that each processor will work on (block + one more element on either side that processor depends on)*
 
 - - - 
@@ -298,7 +276,6 @@
 → *sweeps over A computing the moving average of neighbouring four elements***
 → *computes new array B from A then copied back into B***
 → *tries to overlap communication with computation***
-![[Pasted image 20231203170137.png|400]]
 - → *do while loop iterates until a convergence on condition is met*
 - → ***calculates the new values for the boundary elements** of B by taking the average of neighbouring elements in A*
 - → *uses **non-blocking send & receive operations** to **exchange boundary data** between neighbouring processes*
