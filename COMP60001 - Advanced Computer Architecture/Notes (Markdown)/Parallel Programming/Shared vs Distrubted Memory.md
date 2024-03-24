@@ -9,14 +9,14 @@
 
 → ***power considerations & multicore***
 
-→ ***shared-memory parallel programming*
+→ ***shared-memory parallel programming***
 	→ *dynamic load-balancing*
 	→ *distributed-memory parallel programming (why harder to program but more robust performance)*
 
 → *cache coherency*
 	*→ design space of snooping protocols based on broadcasting invalidations & requests*
 
-→ *atomic operations & locks***
+→ ***atomic operations & locks***
 
 → *sequential consistency*
 
@@ -27,7 +27,7 @@
 - → *single thread performance non-longer increasing with Moore’s Law*
 - → *as clock frequency hit a maximum point (power & cooling requirements)*
 - → *power hit a maximum point*
-- → ***to exploit transistor count & increase performance (without increasing clock frequency) → increase number of cores*
+- → ***to exploit transistor count & increase performance (without increasing clock frequency) → increase number of cores***
 
 - - - 
 
@@ -53,21 +53,21 @@
 - → *much more efficient to use lots of parallel units at a low clock rate & low voltage (less energy per operation)*
 
 ***Solutions:***
-→ ***compute fast & then turn system off*
+→ ***compute fast & then turn system off***
 
-→ ***compute just fast enough to meet deadline*
+→ ***compute just fast enough to meet deadline***
 
 → ***clock/power gating***
 - → *turn functional units/cores off when they are not being used*
 
-→ ***dynamic voltage/clock regulation*
+→ ***dynamic voltage/clock regulation***
 - → *reduce clock rate dynamically*
 - → *reduce supply voltage dynamically*
 - → *such as when CPU is not a bottleneck (or battery is low)* 
 
-→ ***run on lots of cores - each at a low clock rate*
+→ ***run on lots of cores - each at a low clock rate***
 
-→ ***turbo mode*
+→ ***turbo mode***
 - → *boost clock rate only when one core is active*
 
 - - - 
@@ -75,8 +75,8 @@
 ***Programming a Parallel Computer***
 
 *two types of possible memory:*
-- → ***Shared Memory*
-- → ***Distributed Memory*
+- → ***Shared Memory***
+- → ***Distributed Memory***
 
 ***Shared Memory:***
 - → *allows **multiple processors to access the same memory space***
@@ -202,7 +202,7 @@
 → processes communicate & synchronised by sending & receiving messages*
 
 ***Features:***
-- ***point-to-point communication** → sending & receiving messages between pairs of processors (with functions like MPI_Send & MPI_Recv)
+- ***point-to-point communication** → sending & receiving messages between pairs of processors (with functions like MPI_Send & MPI_Recv)*
 - ***collective communication** → operations involving groups of processes, such as broadcasting a message to all processes or gathering messages from all processes*
 - ***synchronisation** → provides mechanisms for synchronising processes*
 
