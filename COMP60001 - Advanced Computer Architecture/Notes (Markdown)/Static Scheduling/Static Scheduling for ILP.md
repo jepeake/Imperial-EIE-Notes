@@ -25,21 +25,14 @@
 ***Example***
 
 *adding scalar to a vector:*
-![[Pasted image 20231121204537.png|500]]
 
 *introduces many stalls in execution:*
 
-![[Pasted image 20231121204650.png|500]]
-
 *rewriting code to minimise stalls:*
-
-![[Pasted image 20231121204749.png|500]]
 
 → *swapping BNEX & S.D by changing address of S.D*
 
 *improving by loop unrolling:*
-
-![[Pasted image 20231121204830.png|500]]
 
 → *4 copies of loop body*
 → *one copy of increment & test*
@@ -47,25 +40,19 @@
 
 *register renaming:*
 
-![[Pasted image 20231121204950.png|500]]
-
 → *each loop body uses own registers → removing RAW hazards*
 
 *unrolled loop that minimises stalls:*
-
-![[Pasted image 20231121205053.png|500]]
 
 → *3.5 cycles per iteration*
 
 *software pipelining:*
 
-![[Pasted image 20231121205253.png|500]]
-
 - - - 
 
 ***Software Pipelining***
 
-→ ***static overlapping of loop bodies*
+→ ***static overlapping of loop bodies***
 
 → *if iterations from loops are independent → then can get more ILP by taking instructions from different iterations*
 
@@ -73,17 +60,9 @@
 
 → *Tomasulo in Software*
 
-![[Pasted image 20231121205335.png|500]]
-
 - → *5 cycles per Iteration*
 
-![[Pasted image 20231121205648.png|400]]
-
 *including drain & fill phases:*
-
-![[Pasted image 20231121205727.png|400]]
-
-![[Pasted image 20231121205942.png|400]]
 
 - - - 
 
@@ -109,27 +88,24 @@
 - → *need compiling technique that schedules across several branches (simplifies hardware & complicates compiler)*
 
 *examples:*
-![[Pasted image 20231121210619.png|600]]
 
 *Transmeta:*
 - *four functional units in machine*
 - *each 128-bit instruction has four fields telling corresponding unit what to do in this cycle*
-- *x86 compatible → hardware contained software that takes x86 instructions & translates into VLIW instructions & optimised scheduling to achieve higher performance
+- *x86 compatible → hardware contained software that takes x86 instructions & translates into VLIW instructions & optimised scheduling to achieve higher performance*
 
 *Texas Instruments:*
 - *8 functional units*
 - *2 separate RFs (4 functional units each)*
-- *can execute 8 instructions per cycle→  if fits in all 8 functional units
+- *can execute 8 instructions per cycle→  if fits in all 8 functional units*
 
 - - - 
 
 ***Loop Unrolling in VLIW***
 
 *example:*
-![[Pasted image 20231121211346.png|500]]
 
 *on a VLIW machine:*
-![[Pasted image 20231121212901.png|500]]
 
 - *each instruction packet has 5 entries*
 - → *issuing instruction in parallel executes loop in fewer clock cycles*
@@ -145,11 +121,9 @@
 
 ***Software Pipelining with Loop Unrolling in VLIW***
 
-![[Pasted image 20231121213140.png|500]]
-
 - *software pipelining across 9 iterations of original loop (3 iterations in each cycle & 3 cycles)*
 - *in each iteration of loop:*
-- *→ store, compute & load in parallel for different loop iterations
+- *→ store, compute & load in parallel for different loop iterations*
 
 - → *9 results in 9 cycles → 1 clock per iteration*
 - *average: 3.67 instructions per cycle (73.3% utilisation)*
@@ -180,13 +154,9 @@
 → *each bundle consists of a 5-bit template field & 3 instructions (41bits each)*
 → *template → marks where instructions in the bundle are dependent/independent & whether they can be issued in parallel with the next bundle*
 
-![[Pasted image 20231121213621.png|400]]
-
 - → *smaller code size the VLIW/larger than x86*
 
 - → *benefit of VLIW machine with more flexibility (more binary compatible across machines)*
-
-![[Pasted image 20231121214219.png|300]]
 
 - ***;; → stop bit*** *(marks the end of a sequence of bundles that can be issued in parallel)*
 - → *if not stop bit between instructions - can be issued at the same time*
@@ -213,9 +183,7 @@
 - *registers 32-128 used as a register stack & each procedure is allocated a set of registers*
 - → *the new register stack frame is created for a called procedure by renaming registers in hardware*
 - → *a special register called the **current frame pointer (CFM)** points to the set of registers used by a given procedure*
-- → *registers 0-31 are always accessible & addressed 0-31
-
-![[Pasted image 20231121214902.png|250]]
+- → *registers 0-31 are always accessible & addressed 0-31*
 
 - *main calls function f with parameters a,b,c*
 - → *a,b,c put into logical registers of main & call made*
@@ -228,8 +196,6 @@
 - - - 
 
 ***Predication***
-
-![[Pasted image 20231121221047.png|400]]
 
 - *conditions can be computed & stashed in a predicate register*
 - → *used to control whether ana instruction executed*
@@ -244,7 +210,6 @@
 - *when a branch would break a parallel issue packet → move instructions & predicate them*
 
 *instruction sequence into two instruction packets:*
-![[Pasted image 20231121221317.png|500]]
 
 *moving instructions:*
 → *first compute the predicate*
@@ -253,8 +218,6 @@
 
 → *in the next packet - predicate E,F,H (executed if branch not taken)*
 → *& pack packet with H,I,J*
-
-![[Pasted image 20231121221512.png|400]]
 
 - - - 
 
@@ -280,8 +243,6 @@
 → *unsafe*
 → *want to move load instruction earlier to allow more instructions to be used before read (otherwise stalls waiting for read)*
 
-![[Pasted image 20231121222305.png|500]]
-
 - → *ld.s fetches speculatively from memory*
 - → *i.e. any exception (i.e invalid access) due to ld.s is suppressed*
 
@@ -296,9 +257,6 @@
 - → *move not only load but read earlier also (useful instructions between load, use, and check)* 
 - → *every register has a NaT bit indicating whether the data in the register is valid*
 
-
-![[Pasted image 20231121222950.png|500]]
-
 - → *speculatively loaded data can be consumed prior to check*
 - → *speculation status is propagated with speculated data via NaT bit (if speculative instruction causes an exception → NaT bit indicates this)*
 - → *any instruction that uses a speculative result also becomes speculative*
@@ -309,10 +267,8 @@
 
 ***Speculative Advanced Load***
 
-→ *want to move load instruction earlier & put useful work between load & use
-→ ***but there is a store instruction that may store to same address as load*
-
-![[Pasted image 20231121223922.png|400]]
+→ *want to move load instruction earlier & put useful work between load & use*
+→ ***but there is a store instruction that may store to same address as load***
 
 - → *ld.a starts the monitoring of any store to the same address as the advanced load*
 - → *if no aliasing has occurred since ld.a → ld.c is a NOP*
@@ -336,7 +292,6 @@
 ***Register Rotation***
 
 *consider loop for copying data as one issue packet:*
-![[Pasted image 20231121225624.png|400]]
 
 - ***br.ctop L1*** → *rotates the general registers*
 
@@ -344,18 +299,16 @@
 - → *reading r37 reads the value that was assigned into r35*
 - *→ register rotation eliminates a dependence between load & store instructions & allows the loop to execute in one cycle*
 
-- → ***logical to physical register mapping is shifted by 1 each time the branch (br.ctop) is executed*
+- → ***logical to physical register mapping is shifted by 1 each time the branch (br.ctop) is executed***
 
 - - - 
 
 ***Example - Register Rotation***
 
-![[Pasted image 20231122102919.png|500]]
-
 - *loop instructions all in one issue packet & will be executed in a single clock cycle*
 
 ***predicate mechanism:***
-- *predicate mechanism activates successive stages of the three-stage software pipeline - to fill (successively activating stage) & drain (successively deactivating stages) on start-up & loop termination
+- *predicate mechanism activates successive stages of the three-stage software pipeline - to fill (successively activating stage) & drain (successively deactivating stages) on start-up & loop termination*
 - *when software pipeline full → all predicate bits are 1*
 
 ***br.ctop:***
@@ -370,18 +323,15 @@
 - → *store instruction stores the result of the add instruction from the previous iteration*
 
 ***fill:***
-![[Pasted image 20231122105716.png|500]]
 - *on first iteration of loop - only predicate register p16 is 1 & only load instruction executes (loading x1 into r32)
 - *add & store do not execute*
 - *bt.ctop activates the next predicate register (sets to 1) & rotates general registers logical-physical mapping (shifting logical registers by 1 with respect to physical registers)*
 - *physical register 32 → logical register 33*
 - *33 → 34 … 38→ 39 … 39 → 32*
-![[Pasted image 20231122110634.png|500]]
  - *on second iteration of loop - loads into logical register 32 (physical register 39)*
  - *adds 1 to logical register 33 (physical register 32) & result into logical register 34 (physical register 33)*
  - *load instruction does not execute (predicate 0)*
  - *br.ctop activates the final predicate register & rotates general register logical-physical mappings*
-![[Pasted image 20231122110801.png|500]]
 - *third iteration loads into logical r32 (physical 38)*
 - *adds 1 to logical 33 (physical 39 & value loaded into r32 in previous iteration)*
 - *stores logical r35 into memory (result of add instruction from previous iteration)*
@@ -405,14 +355,12 @@
 
 ***IBM Power 4:***
 - → *dynamically scheduled processor*
-![[Pasted image 20231122111655.png|500]]
 - → *multiple pipeline stages for instruction crack & group formation*
 - → *finding which instructions in a packet can be issued at the same time (no dependencies)*
 - → *much more complicated pipeline required before instructions can be issued as a group*
 
 ***Itanium II:***
 - → *pipeline introduces a Register Rotation Pipeline Stage*
-![[Pasted image 20231122111624.png|500]]
 - → *much shallower, simpler pipeline*
 - → *lower branch misprediction penalty etc.*
 
