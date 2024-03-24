@@ -7,23 +7,19 @@
 
 ***Spectre v1***
 
-![[Pasted image 20231115202759.png|600]]
-
 - *declare a valid array for the victim to access & a canary array whose cached-ness can be probed (to determine which allocations of canary made → & infer secret)*
 
 - *access the valid array with an out of bounds index (speculatively executing & causing a misprediction in which the bound checking predicted to be satisfied - but is not)*
 
 - *if an out of bounds index is selected that corresponds to the address of a character in the secret (e.g. secret - array1 → first character of secret) & the element accessed out of bounds from valid array will correspond to a character of the secret*
 
-- *this address can then be used in the accessing of canary array
+- *this address can then be used in the accessing of canary array*
 
-- *flushing canary array from the cache & then probing & timing accesses determines which cache lines corresponding to canary array be have been accessed by victim (fast reload times)
+- *flushing canary array from the cache & then probing & timing accesses determines which cache lines corresponding to canary array be have been accessed by victim (fast reload times)*
 
-- *identifying fast access times statistically → can determine which elements of canary array accessed by victim → which can then be used to determine secret inferred from addresses accessed
+- *identifying fast access times statistically → can determine which elements of canary array accessed by victim → which can then be used to determine secret inferred from addresses accessed*
 
 ***example with dynamically scheduled CPU with RUU:***
-
-![[Pasted image 20231117195031.png|600]]
 
 - *fetch & issue the victim code*
 - *victim code:*
@@ -55,21 +51,17 @@
 *blue pages → user-mode mapping (virtual address space)*
 *green pages → supervisor-mode mapping (mapping of the OS Kernel)*
 
-![[Pasted image 20231117201557.png|300]]
-
 - *performance optimisation → map the OS Kernel into every process’s virtual address space*
 - *tagged as supervisor-mode access*
 - *when an interrupt or system call occurs → no change to address mapping → just flip supervisor bit*
 
 - *speculative accesses can be made to addresses in the kernel’s memory*
--  → ***spectre attack can be used to access all of the kernel’s data*
+-  → ***spectre attack can be used to access all of the kernel’s data***
 
 - *commonly the kernel’s virtual address space contains mapping to all of the physical memory*
 - → *an attack can capture secrets from all other user processes*
 
 ***why is the invalid access to the secret data (misprediction) only detected at commit time?***
-
-![[Pasted image 20231117202547.png|400]]
 
 - *load unit initiates load from L1D cache (speculatively)*
 - *indexing the L1D data & tag*
@@ -78,7 +70,7 @@
 - *looks up virtual page number in DTLB*
 - *if tag matches translation → data is forwarded to the common data bus*
 - *if the tag match fails → L1D cache miss → initiates L2 access*
-- *index L2 with physical address & allocate cache line into L1D
+- *index L2 with physical address & allocate cache line into L1D*
 
 - *DTLB contains metadata indicating whether address translation valid for current processor state (in user-mode are we allowed to access this particular address translation)*
 - *this data passed to access validity check to determine validity of load/store* 
@@ -99,10 +91,10 @@
 
 - *user-mode address-space layout randomisation common to mitigate attacks*
 
-- *all modern OSs now also implement kernel address-space layout randomisation 
+- *all modern OSs now also implement kernel address-space layout randomisation*
 - *(attacker must guess where in user-mode mappings the supervisor-mode mappings are)*
 
-- → *exploiting meltdown more difficult (but still possible)
+- → *exploiting meltdown more difficult (but still possible)*
 
 - - - 
 
@@ -128,7 +120,6 @@
 - → *trick the victim into accessing the wanted data (creating an observable microarchitectural state change → side channel)*
 
 - *suppose the OS kernel includes:*
-![[Pasted image 20231117214849.png|250]]
 - → *called a gadget*
 - → *suppose p points to secret & we know address of B*
 
@@ -144,15 +135,11 @@
 - *system call in an OS → invoked with sysenter instruction*
 - *a register can be set to hold the id of the particular system call*
 
-![[Pasted image 20231117215519.png|400]]
-
 - *the kernel is entered at a standard entry address*
 - *looks up the system call handler in a table according to the id of the system call*
 - *that handler is called*
 - *i.e. calling of the handler→ indirect function call*
-- → ***predicted by the BTB*
-
-![[Pasted image 20231117215531.png|400]]
+- → ***predicted by the BTB***
 
 - → *perhaps the BTB can be primed to jump to the gadget code*
 
@@ -179,7 +166,7 @@
 
 - ***prevent the attacker from tricking the branch predictor***
 - *→ add an instruction to block use of branch prediction*
-- *→ find places where blocking instruction should be used (i.e. all places where language based security needed → difficult) (could be placed at kernel-entry code)
+- *→ find places where blocking instruction should be used (i.e. all places where language based security needed → difficult) (could be placed at kernel-entry code)*
 - → *(performance cost due to no branch prediction)*
 
 - ***block branch predictor contention***
@@ -199,8 +186,6 @@
 → *fixes return address stack to ensure a fixed branch prediction target*
 → *ensures safe control transfer to a target address by performing a function call, modifying the return address, & then returning*
 → ***attacker cannot modify prediction target***
-
-![[Pasted image 20231121201835.png|600]]
 
 → *RP2 called (jump to RP2) & address of RP1 pushed to return address stack*
 → *overwrite top of the return address stack with desired jump target*
